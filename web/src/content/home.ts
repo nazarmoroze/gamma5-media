@@ -11,9 +11,10 @@ export const contacts = {
 } as const;
 
 export const hero = {
-  eyebrow: "Creative & full-cycle video production",
-  title: "Video with a story",
-  subtitle: "that makes your brand easier to remember.",
+  eyebrow: "Video production for brands, agencies & developers",
+  title: "Video that brings you clients",
+  subtitle: "Commercials, real estate films and social content — from strategy to final delivery. One team, full cycle, based in Cyprus.",
+  cta: "Discuss your project",
   showreel: {
     src: `${FRAMER}/kIhVsOiVYF9wwVUSN7fY1OFEkHA.mp4`,
     poster: "/media/house.jpg",

@@ -65,7 +65,7 @@ export function Hero() {
             Watch showreel
           </button>
           <a href="#contact" className="btn btn-red">
-            Start a project
+            {hero.cta}
           </a>
         </div>
       </div>
