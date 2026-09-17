@@ -27,7 +27,6 @@ export default defineConfig({
       },
       allowOrigins: [
         'http://localhost:*',
-        'https://*.vercel.app',
         'https://gamma5media.com',
         'https://www.gamma5media.com',
       ],

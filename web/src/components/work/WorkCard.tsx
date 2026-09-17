@@ -1,5 +1,6 @@
 "use client";
 
+import { stegaClean } from "next-sanity";
 import Link from "next/link";
 import { useRef } from "react";
 
@@ -50,7 +51,7 @@ export function WorkCard({ item, delay, onPlay }: WorkCardProps) {
         <video
           ref={videoRef}
           className={styles.preview}
-          src={item.previewVideo}
+          src={stegaClean(item.previewVideo) ?? undefined}
           muted
           loop
           playsInline

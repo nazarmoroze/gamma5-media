@@ -1,18 +1,82 @@
 import { defineQuery } from "next-sanity";
 
+const imageFields = /* groq */ `
+  alt,
+  hotspot,
+  crop,
+  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }
+`;
+
+const caseCardFields = /* groq */ `
+  _id,
+  title,
+  "slug": slug.current,
+  client,
+  category,
+  year,
+  orientation,
+  cover { ${imageFields} },
+  "fullVideo": coalesce(fullVideoFile.asset->url, fullVideoUrl),
+  "previewVideo": coalesce(previewVideoFile.asset->url, previewVideoUrl)
+`;
+
+export const SETTINGS_QUERY = defineQuery(`
+  *[_id == "siteSettings" && _type == "siteSettings"][0] {
+    name,
+    legalName,
+    location,
+    email,
+    phone,
+    telegram,
+    instagram,
+    linkedin
+  }
+`);
+
+export const HOME_QUERY = defineQuery(`
+  *[_id == "homePage" && _type == "homePage"][0] {
+    _id,
+    _type,
+    hero {
+      title,
+      subtitle,
+      ctaLabel,
+      "showreel": coalesce(showreelFile.asset->url, showreelUrl),
+      poster { ${imageFields} }
+    },
+    about {
+      heading,
+      lead,
+      body,
+      stats[] { _key, value, label },
+      clients[] {
+        _key,
+        name,
+        logo { asset->{ _id, url, metadata { dimensions { width, height } } } }
+      }
+    },
+    portfolio {
+      title,
+      intro,
+      "cases": cases[]->{ ${caseCardFields} }
+    },
+    faq {
+      title,
+      intro,
+      items[] { _key, question, answer }
+    },
+    contact { title, lede },
+    seo {
+      title,
+      description,
+      image { alt, asset->{ _id } }
+    }
+  }
+`);
+
 export const CASES_QUERY = defineQuery(`
   *[_type == "case" && defined(slug.current)] | order(coalesce(order, 999) asc, year desc) {
-    _id,
-    title,
-    "slug": slug.current,
-    client,
-    category,
-    year,
-    featured,
-    orientation,
-    cover { alt, hotspot, crop, asset->{ _id, url, metadata { lqip, dimensions { width, height } } } },
-    "fullVideo": coalesce(fullVideoFile.asset->url, fullVideoUrl),
-    "previewVideo": coalesce(previewVideoFile.asset->url, previewVideoUrl)
+    ${caseCardFields}
   }
 `);
 
@@ -22,19 +86,10 @@ export const CASE_SLUGS_QUERY = defineQuery(`
 
 export const CASE_QUERY = defineQuery(`
   *[_type == "case" && slug.current == $slug][0] {
-    _id,
-    title,
-    "slug": slug.current,
-    client,
-    category,
-    year,
+    ${caseCardFields},
     scope,
     summary,
-    orientation,
-    cover { alt, hotspot, crop, asset->{ _id, url, metadata { lqip, dimensions { width, height } } } },
-    "fullVideo": coalesce(fullVideoFile.asset->url, fullVideoUrl),
-    "previewVideo": coalesce(previewVideoFile.asset->url, previewVideoUrl),
-    gallery[] { _key, alt, caption, hotspot, crop, asset->{ _id, url, metadata { lqip, dimensions { width, height } } } },
+    gallery[] { _key, caption, ${imageFields} },
     brief,
     idea,
     result,

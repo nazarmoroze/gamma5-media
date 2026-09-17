@@ -3,11 +3,10 @@ import type { Metadata } from "next";
 import { CtaBand } from "@/components/site/CtaBand";
 import { PageTransition } from "@/components/site/PageTransition";
 import { WorkGrid } from "@/components/work/WorkGrid";
-import { contacts } from "@/content/home";
-import { sanityFetch } from "@/sanity/fetch";
-import { CASES_QUERY } from "@/sanity/queries";
+import { contactLinks } from "@/lib/site";
+import { sanityFetch } from "@/sanity/live";
+import { CASES_QUERY, SETTINGS_QUERY } from "@/sanity/queries";
 
-import { openGraphDefaults } from "../shared-metadata";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -16,7 +15,6 @@ export const metadata: Metadata = {
     "Commercials, real estate films, YouTube production and short-form videos made by GAMMA5, a video production company in Cyprus.",
   alternates: { canonical: "/work" },
   openGraph: {
-    ...openGraphDefaults,
     type: "website",
     url: "/work",
     title: "Video Production Portfolio | GAMMA5",
@@ -26,7 +24,11 @@ export const metadata: Metadata = {
 };
 
 export default async function WorkPage() {
-  const cases = await sanityFetch({ query: CASES_QUERY });
+  const [{ data: cases }, { data: settings }] = await Promise.all([
+    sanityFetch({ query: CASES_QUERY }),
+    sanityFetch({ query: SETTINGS_QUERY }),
+  ]);
+  const instagram = contactLinks(settings).find((link) => link.key === "instagram");
 
   return (
     <PageTransition>
@@ -35,13 +37,15 @@ export default async function WorkPage() {
           <div className="container">
             <WorkGrid
               cases={cases}
-              extraTile={{
-                href: contacts.instagram.href,
-                kicker: "Instagram",
-                title: "More of our work on Instagram.",
-                label: "Follow @gamma5media",
-                external: true,
-              }}
+              extraTile={
+                instagram && {
+                  href: instagram.href,
+                  kicker: "Instagram",
+                  title: "More of our work on Instagram.",
+                  label: `Follow @${instagram.value}`,
+                  external: true,
+                }
+              }
               heading={
                 <>
                   <span className="eyebrow">Work</span>

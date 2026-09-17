@@ -1,5 +1,6 @@
 "use client";
 
+import { stegaClean } from "next-sanity";
 import { useState } from "react";
 
 import { SanityImage } from "@/components/SanityImage";
@@ -24,7 +25,7 @@ export function CaseVideo({ title, cover, fullVideo, previewVideo, vertical }: C
     return (
       <div className={frameClass}>
         {playing ? (
-          <video className={styles.video} src={fullVideo} controls autoPlay playsInline />
+          <video className={styles.video} src={stegaClean(fullVideo)} controls autoPlay playsInline />
         ) : (
           <>
             <SanityImage image={cover} sizes="(min-width: 1280px) 1200px, 100vw" preload />
@@ -44,7 +45,7 @@ export function CaseVideo({ title, cover, fullVideo, previewVideo, vertical }: C
     <div className={frameClass}>
       <SanityImage image={cover} sizes="(min-width: 1280px) 1200px, 100vw" preload />
       {previewVideo && (
-        <video className={styles.video} src={previewVideo} autoPlay muted loop playsInline aria-hidden="true" />
+        <video className={styles.video} src={stegaClean(previewVideo)} autoPlay muted loop playsInline aria-hidden="true" />
       )}
       <span className={styles.note}>{previewVideo ? "Preview · full film coming soon" : "Film coming soon"}</span>
     </div>

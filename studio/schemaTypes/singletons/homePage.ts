@@ -88,12 +88,6 @@ export const homePageType = defineType({
           validation: (rule) => rule.required(),
         }),
         defineField({name: 'lead', type: 'text', rows: 3}),
-        defineField({
-          name: 'services',
-          type: 'array',
-          of: [defineArrayMember({type: 'string'})],
-          validation: (rule) => rule.unique(),
-        }),
         defineField({name: 'body', type: 'text', rows: 3}),
         defineField({
           name: 'stats',

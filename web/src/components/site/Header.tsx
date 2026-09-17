@@ -5,7 +5,8 @@ import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 
 import { Logo } from "@/components/Logo";
 import { ArrowUpRightIcon } from "@/components/icons";
-import { contacts } from "@/content/home";
+import { contactLinks } from "@/lib/site";
+import type { Settings } from "@/sanity/types";
 
 import styles from "./Header.module.css";
 
@@ -16,16 +17,16 @@ const links = [
   { href: "/#contact", label: "Contact" },
 ];
 
-const socials = [
-  { href: contacts.whatsapp.href, label: "WhatsApp" },
-  { href: contacts.telegram.href, label: "Telegram" },
-  { href: contacts.instagram.href, label: "Instagram" },
-];
-
 // Stagger index for the menu reveal, read by the CSS transition delays.
 const stagger = (i: number) => ({ "--i": i }) as CSSProperties;
 
-export function Header() {
+const MENU_SOCIALS = ["whatsapp", "telegram", "instagram"];
+
+export function Header({ settings }: { settings: Settings | null }) {
+  const contacts = contactLinks(settings);
+  const email = contacts.find((link) => link.key === "email");
+  const socials = contacts.filter((link) => MENU_SOCIALS.includes(link.key));
+
   const [open, setOpen] = useState(false);
   const menuId = useId();
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -120,16 +121,18 @@ export function Header() {
         </nav>
 
         <div className={styles.menuFoot}>
-          <div className={styles.reveal} style={stagger(links.length)}>
-            <span className={styles.footLabel}>Get in touch</span>
-            <a href={`mailto:${contacts.email}`} className={styles.footEmail} onClick={close}>
-              {contacts.email}
-            </a>
-          </div>
+          {email && (
+            <div className={styles.reveal} style={stagger(links.length)}>
+              <span className={styles.footLabel}>Get in touch</span>
+              <a href={email.href} className={styles.footEmail} onClick={close}>
+                {email.value}
+              </a>
+            </div>
+          )}
           <div className={`${styles.reveal} ${styles.socials}`} style={stagger(links.length + 1)}>
-            {socials.map((s) => (
-              <a key={s.label} href={s.href} className={styles.social}>
-                {s.label}
+            {socials.map((link) => (
+              <a key={link.key} href={link.href} className={styles.social}>
+                {link.label}
               </a>
             ))}
           </div>
