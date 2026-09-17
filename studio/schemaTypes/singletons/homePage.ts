@@ -109,7 +109,7 @@ export const homePageType = defineType({
           name: 'clients',
           title: 'Client logos',
           type: 'array',
-          description: 'White logos on a transparent background (PNG or SVG) look best.',
+          description: 'Shown right under the hero as “Trusted by”. White logos on a transparent background (PNG or SVG) look best.',
           of: [
             defineArrayMember({
               name: 'client',

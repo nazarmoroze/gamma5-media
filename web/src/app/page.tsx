@@ -6,6 +6,7 @@ import { Contact } from "@/components/home/Contact";
 import { Faq } from "@/components/home/Faq";
 import { Hero } from "@/components/home/Hero";
 import { Portfolio } from "@/components/home/Portfolio";
+import { TrustedBy } from "@/components/home/TrustedBy";
 import { JsonLd } from "@/components/site/JsonLd";
 import { PageTransition } from "@/components/site/PageTransition";
 import { siteUrl } from "@/lib/site";
@@ -80,6 +81,7 @@ export default async function Home() {
       <main>
         <JsonLd data={structuredData(home, settings)} />
         {home?.hero && <Hero hero={home.hero} />}
+        {home?.about?.clients?.length ? <TrustedBy clients={home.about.clients} /> : null}
         {home?.about && <About about={home.about} brandName={settings?.name ?? "GAMMA5"} />}
         {home?.portfolio && <Portfolio portfolio={home.portfolio} />}
         {home?.faq?.items?.length ? <Faq faq={home.faq} /> : null}
