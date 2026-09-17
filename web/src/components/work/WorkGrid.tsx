@@ -22,23 +22,27 @@ const filters: { id: Filter; label: string }[] = [
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
+type Tile = { href: string; kicker: string; title: string; label: string; external?: boolean };
+
 type WorkGridProps = {
   cases: CaseSummary[];
   heading: ReactNode;
-  /** Make the first card span two columns in the unfiltered view. */
-  featureFirst?: boolean;
+  /** Second square tile, used when the red "your project" tile alone can't complete the last row. */
+  extraTile?: Tile;
 };
 
-export function WorkGrid({ cases, heading, featureFirst = false }: WorkGridProps) {
+export function WorkGrid({ cases, heading, extraTile }: WorkGridProps) {
   const [filter, setFilter] = useState<Filter>("all");
   const [activeId, setActiveId] = useState<string | null>(null);
   const [indicator, setIndicator] = useState({ x: 0, w: 0 });
   const buttons = useRef<Partial<Record<Filter, HTMLButtonElement | null>>>({});
 
   const list = filter === "all" ? cases : cases.filter((item) => item.category === filter);
-  const wideFirst = featureFirst && filter === "all" && list.length > 1;
-  // On the 3-column desktop grid a red card fills the last row when it is incomplete.
-  const showCta = list.length > 0 && (list.length + (wideFirst ? 1 : 0)) % 3 !== 0;
+  // Every tile is square, so on the 3-column desktop grid the last row is completed
+  // with the red "your project" tile and, when two cells are missing, the extra tile.
+  const missing = list.length === 0 ? 0 : (3 - (list.length % 3)) % 3;
+  const showCta = missing > 0;
+  const showExtra = missing === 2 && Boolean(extraTile);
 
   useLayoutEffect(() => {
     const measure = () => {
@@ -99,7 +103,6 @@ export function WorkGrid({ cases, heading, featureFirst = false }: WorkGridProps
           <WorkCard
             key={item._id}
             item={item}
-            wide={wideFirst && i === 0}
             delay={i * 50}
             onPlay={() => setActiveId(item._id)}
           />
@@ -124,6 +127,23 @@ export function WorkGrid({ cases, heading, featureFirst = false }: WorkGridProps
               <span className={styles.ctaTitle}>Could be the next one here.</span>
               <span className={styles.ctaLink}>
                 Discuss your project <ArrowRightIcon />
+              </span>
+            </span>
+          </Link>
+        )}
+
+        {showExtra && extraTile && (
+          <Link
+            href={extraTile.href}
+            className={styles.tile}
+            style={{ animationDelay: `${(list.length + 1) * 50}ms` }}
+            {...(extraTile.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+          >
+            <span className={styles.ctaKicker}>{extraTile.kicker}</span>
+            <span className={styles.ctaBody}>
+              <span className={styles.ctaTitle}>{extraTile.title}</span>
+              <span className={styles.ctaLink}>
+                {extraTile.label} <ArrowRightIcon />
               </span>
             </span>
           </Link>

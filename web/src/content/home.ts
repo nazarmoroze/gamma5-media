@@ -57,3 +57,40 @@ export const contact = {
   title: "Tell us about your video project",
   lede: "Get a quote for a commercial, corporate or real estate video. Share your goal and timeline, and we’ll come back with ideas and next steps.",
 } as const;
+
+export const faq = {
+  title: "Video production questions, answered",
+  intro: "Can’t find what you’re looking for? Ask us directly — we’re happy to talk through your idea.",
+  items: [
+    {
+      question: "What video production services do you offer?",
+      answer:
+        "GAMMA5 produces commercials and advertising, corporate videos, real estate videos, YouTube shows, Reels and TikTok content, and documentaries. We handle the full cycle: concept and script, filming, editing and preparing the final files for publishing.",
+    },
+    {
+      question: "Where are you based, and do you work outside Cyprus?",
+      answer:
+        "GAMMA5 is a video production company based in Cyprus. We work with clients across Cyprus and all over the world.",
+    },
+    {
+      question: "Who do you usually work with?",
+      answer:
+        "Brands, agencies and property developers. Clients include Leptos Estates, bbf:, Trinity, Lavita Invest and United Rescue Cyprus.",
+    },
+    {
+      question: "How much does a video cost?",
+      answer:
+        "Every project is quoted individually. The price depends on the format, the number of shooting days, the crew and the amount of editing. Send us a short brief and we’ll prepare a quote.",
+    },
+    {
+      question: "How long does a video project take?",
+      answer:
+        "It depends on the scope: a set of short social videos moves faster than a commercial with several locations. Share your deadline in the brief and we’ll confirm a realistic schedule before we start.",
+    },
+    {
+      question: "Do you create vertical videos for Reels and TikTok?",
+      answer:
+        "Yes. We shoot and edit vertical short-form content for Reels, TikTok and YouTube Shorts, as a standalone project or alongside a larger production.",
+    },
+  ],
+} as const;

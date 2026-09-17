@@ -1,0 +1,161 @@
+.faq {
+  padding-top: 88px;
+  scroll-margin-top: 60px;
+}
+
+.grid {
+  display: grid;
+  gap: 32px;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.lede {
+  max-width: 420px;
+  font-size: clamp(17px, 1.4vw, 19px);
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.ask.ask {
+  margin-top: 6px;
+}
+
+.list {
+  border-top: 1px solid var(--line);
+}
+
+.item {
+  border-bottom: 1px solid var(--line);
+}
+
+/* Smooth height animation where ::details-content is supported; others open instantly. */
+.item::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size 320ms var(--ease-out),
+    content-visibility 320ms allow-discrete;
+}
+
+.item[open]::details-content {
+  block-size: auto;
+}
+
+.question {
+  min-height: 72px;
+  padding: 18px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.question::-webkit-details-marker {
+  display: none;
+}
+
+.questionText {
+  font-size: clamp(18px, 1.6vw, 22px);
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.icon {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  transition:
+    background-color 200ms ease,
+    transform 300ms var(--ease-out);
+}
+
+.icon::before,
+.icon::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 2px;
+  margin: -1px 0 0 -7px;
+  border-radius: 1px;
+  background: currentColor;
+}
+
+.icon::after {
+  transform: rotate(90deg);
+  transition: transform 300ms var(--ease-out);
+}
+
+.item[open] .icon {
+  background: var(--red);
+  transform: rotate(180deg);
+}
+
+.item[open] .icon::after {
+  transform: rotate(0deg);
+}
+
+.answer {
+  max-width: 680px;
+  padding: 0 56px 24px 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .question:hover .icon {
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  .item[open] .question:hover .icon {
+    background: var(--red);
+  }
+}
+
+@media (min-width: 900px) {
+  .faq {
+    padding-top: 150px;
+    scroll-margin-top: 40px;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+    gap: 80px;
+    align-items: start;
+  }
+
+  .intro {
+    position: sticky;
+    top: 130px;
+    gap: 22px;
+  }
+
+  .question {
+    min-height: 88px;
+    padding: 22px 0;
+  }
+
+  .icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .answer {
+    font-size: 18px;
+    padding-bottom: 28px;
+  }
+}

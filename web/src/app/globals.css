@@ -1,4 +1,5 @@
 :root {
+  interpolate-size: allow-keywords;
   --bg: #070707;
   --surface: #111111;
   --surface-2: #161616;
