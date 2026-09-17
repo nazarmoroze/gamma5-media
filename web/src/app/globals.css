@@ -168,7 +168,6 @@ p {
   background: rgba(255, 255, 255, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.22);
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
 }
 
 .btn-outline {
@@ -223,16 +222,24 @@ p {
   pointer-events: none;
 }
 
-::view-transition-group(site-header) {
+/* The header pill and the mobile menu stay live and on top while the page swaps. */
+::view-transition-group(site-header),
+::view-transition-group(site-menu) {
   animation: none;
   z-index: 100;
 }
 
-::view-transition-old(site-header) {
+::view-transition-group(site-menu) {
+  z-index: 99;
+}
+
+::view-transition-old(site-header),
+::view-transition-old(site-menu) {
   display: none;
 }
 
-::view-transition-new(site-header) {
+::view-transition-new(site-header),
+::view-transition-new(site-menu) {
   animation: none;
 }
 

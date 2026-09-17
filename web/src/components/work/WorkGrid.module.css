@@ -138,7 +138,6 @@
   border-radius: 999px;
   background: rgba(7, 7, 7, 0.5);
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   font-size: 13px;
   font-weight: 500;
 }
@@ -331,7 +330,6 @@
   .play {
     background: rgba(255, 255, 255, 0.18);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
   }
 }
 

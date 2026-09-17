@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore, type CSSProperties } from "react";
 
 import { Logo } from "@/components/Logo";
 import { ArrowUpRightIcon } from "@/components/icons";
@@ -22,12 +22,25 @@ const stagger = (i: number) => ({ "--i": i }) as CSSProperties;
 
 const MENU_SOCIALS = ["whatsapp", "telegram", "instagram"];
 
+// Scroll distance after which the desktop header switches to its compact size.
+const COMPACT_AFTER = 40;
+
+function subscribeScroll(onChange: () => void) {
+  window.addEventListener("scroll", onChange, { passive: true });
+  return () => window.removeEventListener("scroll", onChange);
+}
+
+function getCompact() {
+  return window.scrollY > COMPACT_AFTER;
+}
+
 export function Header({ settings }: { settings: Settings | null }) {
   const contacts = contactLinks(settings);
   const email = contacts.find((link) => link.key === "email");
   const socials = contacts.filter((link) => MENU_SOCIALS.includes(link.key));
 
   const [open, setOpen] = useState(false);
+  const compact = useSyncExternalStore(subscribeScroll, getCompact, () => false);
   const menuId = useId();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
@@ -63,8 +76,9 @@ export function Header({ settings }: { settings: Settings | null }) {
   const close = () => setOpen(false);
 
   return (
-    <header className={styles.header} data-open={open} style={{ viewTransitionName: "site-header" }}>
-      <div className={styles.bar}>
+    <header className={styles.header} data-open={open} data-compact={compact}>
+      {/* Named on the pill, not the header: a view-transition-name on an ancestor would cut off the backdrop blur. */}
+      <div className={styles.bar} style={{ viewTransitionName: "site-header" }}>
         <Link href="/" className={styles.logo} aria-label="GAMMA5 — home" onClick={close}>
           <Logo />
         </Link>
@@ -96,7 +110,13 @@ export function Header({ settings }: { settings: Settings | null }) {
         </div>
       </div>
 
-      <div id={menuId} className={styles.overlay} data-open={open} inert={!open}>
+      <div
+        id={menuId}
+        className={styles.overlay}
+        data-open={open}
+        inert={!open}
+        style={{ viewTransitionName: "site-menu" }}
+      >
         <nav aria-label="Mobile" className={styles.menuNav}>
           <ol className={styles.menuList}>
             {links.map((link, i) => (

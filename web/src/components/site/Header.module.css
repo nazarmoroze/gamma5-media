@@ -18,19 +18,21 @@
   justify-content: space-between;
   gap: 24px;
   border-radius: 999px;
-  background: rgba(12, 12, 12, 0.62);
+  background: rgba(10, 10, 10, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 16px 40px -20px rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(24px) saturate(140%);
   transition:
     background-color 300ms ease,
-    border-color 300ms ease;
+    border-color 300ms ease,
+    box-shadow 300ms ease;
 }
 
 /* While the menu is open the pill melts into the overlay behind it. */
 .header[data-open="true"] .bar {
-  background-color: rgba(12, 12, 12, 0);
+  background-color: rgba(10, 10, 10, 0);
   border-color: rgba(255, 255, 255, 0);
+  box-shadow: 0 16px 40px -20px rgba(0, 0, 0, 0);
   transition-duration: 200ms;
 }
 
@@ -352,29 +354,79 @@
     top: 24px;
     left: 24px;
     right: 24px;
+    transition: transform 480ms var(--ease-drawer);
   }
 
   .bar {
     height: 72px;
     padding: 0 12px 0 28px;
+    transition:
+      background-color 300ms ease,
+      border-color 300ms ease,
+      box-shadow 300ms ease,
+      max-width 480ms var(--ease-drawer),
+      height 480ms var(--ease-drawer),
+      padding 480ms var(--ease-drawer);
   }
 
   .logo svg {
     width: 146px;
+    transition: width 480ms var(--ease-drawer);
   }
 
   .nav {
     display: flex;
+    transition: gap 480ms var(--ease-drawer);
   }
 
   .cta.cta {
     height: 48px;
     padding: 0 24px;
     font-size: 16px;
+    transition:
+      transform 160ms var(--ease-out),
+      background-color 200ms ease,
+      height 480ms var(--ease-drawer),
+      padding 480ms var(--ease-drawer);
+  }
+
+  /* Once the page is scrolled the pill tucks up and gets narrower and shorter. */
+  .header[data-compact="true"] {
+    transform: translate3d(0, -10px, 0);
+  }
+
+  .header[data-compact="true"] .bar {
+    max-width: 960px;
+    height: 60px;
+    padding: 0 8px 0 22px;
+    background-color: rgba(10, 10, 10, 0.8);
+  }
+
+  .header[data-compact="true"] .logo svg {
+    width: 120px;
+  }
+
+  .header[data-compact="true"] .nav {
+    gap: 28px;
+  }
+
+  .header[data-compact="true"] .cta.cta {
+    height: 44px;
+    padding: 0 20px;
   }
 
   .menuButton,
   .overlay {
     display: none;
+  }
+}
+
+@media (min-width: 900px) and (prefers-reduced-motion: reduce) {
+  .header,
+  .bar,
+  .logo svg,
+  .nav,
+  .cta.cta {
+    transition: none;
   }
 }
