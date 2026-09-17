@@ -1,0 +1,360 @@
+.contact {
+  padding-block: 88px 64px;
+  scroll-margin-top: 60px;
+}
+
+.grid {
+  display: grid;
+  gap: 36px;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.lede {
+  max-width: 480px;
+  font-size: clamp(17px, 1.4vw, 20px);
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.cards {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.wideCard {
+  grid-column: span 2;
+}
+
+.card {
+  height: 76px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid rgba(245, 245, 244, 0.08);
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    transform 160ms var(--ease-out);
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+.cardText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.cardLabel {
+  font-size: 13px;
+  color: var(--text-subtle);
+}
+
+.cardValue {
+  font-size: 16px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.cardArrow {
+  display: none;
+  flex-shrink: 0;
+  transition: transform 260ms var(--ease-out);
+}
+
+@media (min-width: 640px) {
+  .cardArrow {
+    display: block;
+  }
+}
+
+.panel {
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid rgba(245, 245, 244, 0.08);
+  padding: 22px 18px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.formHead {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formTitle {
+  font-size: clamp(22px, 2vw, 26px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.formHint {
+  font-size: 16px;
+  color: var(--text-subtle);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.fieldset .label {
+  display: block;
+  padding: 0;
+  margin-bottom: 8px;
+}
+
+.label {
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(245, 245, 244, 0.8);
+}
+
+.input {
+  width: 100%;
+  height: 52px;
+  padding: 0 16px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  font-size: 16px;
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease;
+}
+
+.input::placeholder {
+  color: rgba(245, 245, 244, 0.4);
+}
+
+.input:focus {
+  outline: none;
+  border-color: rgba(245, 245, 244, 0.6);
+  background-color: #1a1a1a;
+}
+
+.input[aria-invalid="true"] {
+  border-color: #ff5a55;
+}
+
+.textarea {
+  height: auto;
+  padding-block: 12px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.error {
+  font-size: 14px;
+  color: #ff7a75;
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+
+.segment {
+  height: 44px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease,
+    transform 160ms var(--ease-out);
+}
+
+.segment:active,
+.chip:active {
+  transform: scale(0.97);
+}
+
+.segment[aria-pressed="true"] {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 245, 244, 0.18);
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease,
+    transform 160ms var(--ease-out);
+}
+
+.chip[aria-pressed="true"] {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+
+.submit.submit {
+  width: 100%;
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.success {
+  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  animation: rise 400ms var(--ease-out) both;
+}
+
+.successIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--red);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.successTitle {
+  font-size: clamp(26px, 2.4vw, 32px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.successText {
+  max-width: 360px;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    background: var(--surface-2);
+    border-color: rgba(245, 245, 244, 0.2);
+  }
+
+  .card:hover .cardArrow {
+    transform: translate3d(3px, -3px, 0);
+  }
+
+  .segment:hover:not([aria-pressed="true"]),
+  .chip:hover:not([aria-pressed="true"]) {
+    background: rgba(245, 245, 244, 0.08);
+  }
+}
+
+@media (min-width: 900px) {
+  .contact {
+    padding-block: 150px 140px;
+    scroll-margin-top: 40px;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 560px);
+    gap: 72px;
+    align-items: start;
+  }
+
+  .intro {
+    gap: 28px;
+  }
+
+  .cards {
+    margin-top: 12px;
+    gap: 12px;
+  }
+
+  .card {
+    height: 96px;
+    padding: 0 22px;
+    border-radius: 20px;
+  }
+
+  .cardLabel {
+    font-size: 14px;
+  }
+
+  .cardValue {
+    font-size: 19px;
+  }
+
+  .panel {
+    padding: 36px;
+    border-radius: 28px;
+  }
+
+  .form {
+    gap: 22px;
+  }
+
+  .input {
+    height: 56px;
+    padding: 0 18px;
+    font-size: 17px;
+  }
+
+  .textarea {
+    padding-block: 14px;
+  }
+
+  .segment,
+  .chip {
+    font-size: 15px;
+  }
+
+  .success {
+    min-height: 700px;
+  }
+}
