@@ -16,8 +16,8 @@ const caseCardFields = /* groq */ `
   year,
   orientation,
   cover { ${imageFields} },
-  "fullVideo": coalesce(fullVideoFile.asset->url, fullVideoUrl),
-  "previewVideo": coalesce(previewVideoFile.asset->url, previewVideoUrl)
+  "fullVideo": fullVideoFile.asset->url,
+  "previewVideo": previewVideoFile.asset->url
 `;
 
 export const SETTINGS_QUERY = defineQuery(`
@@ -45,7 +45,7 @@ export const HOME_QUERY = defineQuery(`
       title,
       subtitle,
       ctaLabel,
-      "showreel": coalesce(showreelFile.asset->url, showreelUrl),
+      "showreel": showreelFile.asset->url,
       poster { ${imageFields} }
     },
     about {

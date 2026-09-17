@@ -2,6 +2,7 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 import {HomeIcon} from '@sanity/icons/Home'
 
 import {shareImageField} from '../fields/shareImage'
+import {videoFileField} from '../fields/videoFile'
 
 const imageWithAlt = (name: string, title: string, description?: string) =>
   defineField({
@@ -59,19 +60,11 @@ export const homePageType = defineType({
           description: 'Scrolls to the contact form.',
           validation: (rule) => rule.required().max(30),
         }),
-        defineField({
+        videoFileField({
           name: 'showreelFile',
-          title: 'Showreel file',
-          type: 'file',
-          description: 'MP4. Plays muted in the background and in full in the player. Takes priority over the URL.',
-          options: {accept: 'video/mp4,video/webm'},
-        }),
-        defineField({
-          name: 'showreelUrl',
-          title: 'Showreel URL',
-          type: 'url',
-          description: 'Direct link to an MP4, used when no file is uploaded.',
-          validation: (rule) => rule.uri({scheme: ['https']}),
+          title: 'Showreel',
+          description:
+            'Upload an MP4 (H.264), 1920 × 1080 or 1280 × 720. It plays muted in the background of the hero and in full in the player. The lighter the file, the faster it starts on phones.',
         }),
         imageWithAlt('poster', 'Poster image', 'Shown while the video loads and when motion is reduced.'),
       ],
@@ -86,7 +79,8 @@ export const homePageType = defineType({
         defineField({
           name: 'heading',
           type: 'string',
-          description: 'Shown right after the brand name, e.g. “is a full-cycle video production company based in Cyprus.”',
+          description:
+            'One clear sentence about the company, e.g. “GAMMA5 is a full-cycle video production company based in Cyprus.” Search engines and AI assistants quote it. The brand name is highlighted in red.',
           validation: (rule) => rule.required(),
         }),
         defineField({name: 'lead', type: 'text', rows: 3}),

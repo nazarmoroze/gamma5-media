@@ -2,6 +2,7 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 import {PlayIcon} from '@sanity/icons/Play'
 
 import {shareImageField} from '../fields/shareImage'
+import {videoFileField} from '../fields/videoFile'
 
 export const CASE_CATEGORIES = [
   {title: 'Commercial', value: 'commercial'},
@@ -14,10 +15,6 @@ export const caseType = defineType({
   title: 'Case',
   type: 'document',
   icon: PlayIcon,
-  fieldsets: [
-    {name: 'fullVideo', title: 'Full video', description: 'Plays in the player and on the case page.'},
-    {name: 'previewVideo', title: 'Preview video', description: 'Short loop for cards.'},
-  ],
   groups: [
     {name: 'overview', title: 'Overview', default: true},
     {name: 'media', title: 'Video & images'},
@@ -108,41 +105,19 @@ export const caseType = defineType({
       validation: (rule) => rule.required(),
     }),
     shareImageField({group: 'media'}),
-    defineField({
+    videoFileField({
       name: 'fullVideoFile',
-      title: 'File',
-      type: 'file',
+      title: 'Full film',
       group: 'media',
-      fieldset: 'fullVideo',
-      description: 'The finished film (MP4). Takes priority over the URL.',
-      options: {accept: 'video/mp4,video/webm'},
+      description:
+        'The finished film with sound. Upload an MP4 (H.264 video, AAC audio), 1920 × 1080 for horizontal or 1080 × 1920 for vertical. It plays in the player and on the case page.',
     }),
-    defineField({
-      name: 'fullVideoUrl',
-      title: 'URL',
-      type: 'url',
-      group: 'media',
-      fieldset: 'fullVideo',
-      description: 'Direct link to the MP4, used when no file is uploaded.',
-      validation: (rule) => rule.uri({scheme: ['https']}),
-    }),
-    defineField({
+    videoFileField({
       name: 'previewVideoFile',
-      title: 'File',
-      type: 'file',
+      title: 'Preview loop',
       group: 'media',
-      fieldset: 'previewVideo',
-      description: 'A short silent loop (a few seconds) that plays on hover.',
-      options: {accept: 'video/mp4,video/webm'},
-    }),
-    defineField({
-      name: 'previewVideoUrl',
-      title: 'URL',
-      type: 'url',
-      group: 'media',
-      fieldset: 'previewVideo',
-      description: 'Direct link to the MP4, used when no file is uploaded.',
-      validation: (rule) => rule.uri({scheme: ['https']}),
+      description:
+        'A short silent loop of a few seconds for the portfolio card and the case page while the full film is not uploaded. Upload an MP4 (H.264) without sound, 1280 × 720 is enough; keep it light, ideally under 2–3 MB.',
     }),
     defineField({
       name: 'orientation',
