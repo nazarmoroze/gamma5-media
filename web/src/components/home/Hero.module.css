@@ -1,0 +1,157 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  animation: zoom 2400ms var(--ease-out) both;
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(7, 7, 7, 0.55) 0%,
+    rgba(7, 7, 7, 0.05) 28%,
+    rgba(7, 7, 7, 0.3) 55%,
+    rgba(7, 7, 7, 0.94) 100%
+  );
+}
+
+.content {
+  position: relative;
+  padding-block: 120px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 860px;
+}
+
+.eyebrow {
+  font-weight: 500;
+  color: rgba(245, 245, 244, 0.82);
+  animation: rise 800ms var(--ease-out) 150ms both;
+}
+
+.title {
+  font-size: clamp(54px, 7.2vw, 104px);
+  line-height: 0.96;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+  animation: rise 800ms var(--ease-out) 250ms both;
+}
+
+.subtitle {
+  font-size: clamp(19px, 1.8vw, 26px);
+  line-height: 1.35;
+  color: rgba(245, 245, 244, 0.84);
+  animation: rise 800ms var(--ease-out) 350ms both;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: rise 800ms var(--ease-out) 450ms both;
+}
+
+.reelButton.reelButton {
+  padding-left: 10px;
+}
+
+.reelIcon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pause {
+  position: absolute;
+  right: 16px;
+  top: 88px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(7, 7, 7, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 160ms var(--ease-out), background-color 200ms ease;
+}
+
+.pause:active {
+  transform: scale(0.97);
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pause:hover {
+    background: rgba(7, 7, 7, 0.7);
+  }
+}
+
+@media (min-width: 640px) {
+  .actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+@media (min-width: 900px) {
+  .hero {
+    min-height: min(100svh, 960px);
+  }
+
+  .content {
+    padding-block: 160px 88px;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 48px;
+  }
+
+  .actions {
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+  }
+
+  .pause {
+    top: auto;
+    right: 24px;
+    bottom: 24px;
+  }
+}
