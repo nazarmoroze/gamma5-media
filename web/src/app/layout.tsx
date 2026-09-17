@@ -5,6 +5,9 @@ import { Instrument_Sans } from "next/font/google";
 
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
+import { site } from "@/content/home";
+
+import { openGraphDefaults } from "./shared-metadata";
 
 import "./globals.css";
 
@@ -15,9 +18,25 @@ const instrumentSans = Instrument_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "GAMMA5 — Creative & Full-Cycle Video Production",
-  description:
-    "GAMMA5 is a full-cycle video production team based in Cyprus: commercials, real estate videos and creative content from the first idea to final publishing.",
+  metadataBase: new URL(site.url),
+  title: {
+    default: `${site.title} | ${site.name}`,
+    template: `%s | ${site.name}`,
+  },
+  description: site.description,
+  applicationName: site.name,
+  openGraph: {
+    ...openGraphDefaults,
+    type: "website",
+    title: `${site.title} | ${site.name}`,
+    description: site.description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${site.title} | ${site.name}`,
+    description: site.description,
+    images: ["/media/house.jpg"],
+  },
 };
 
 export default function RootLayout({
@@ -26,7 +45,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={instrumentSans.variable}>
+    <html lang="en" className={instrumentSans.variable} data-scroll-behavior="smooth">
       <body id="top">
         <Header />
         {children}

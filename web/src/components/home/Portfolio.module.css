@@ -3,6 +3,13 @@
   scroll-margin-top: 60px;
 }
 
+.intro {
+  max-width: 520px;
+  font-size: clamp(17px, 1.4vw, 19px);
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
 .more {
   margin-top: 28px;
   display: flex;

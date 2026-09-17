@@ -52,21 +52,20 @@ export function Hero() {
       <div className={styles.shade} />
 
       <div className={`container ${styles.content}`}>
-        <div className={styles.copy}>
-          <span className={`eyebrow ${styles.eyebrow}`}>{hero.eyebrow}</span>
-          <h1 className={styles.title}>{hero.title}</h1>
+        <h1 className={styles.title}>{hero.title}</h1>
+        <div className={styles.row}>
           <p className={styles.subtitle}>{hero.subtitle}</p>
-        </div>
-        <div className={styles.actions}>
-          <button type="button" className={`btn btn-glass ${styles.reelButton}`} onClick={() => setReelOpen(true)}>
-            <span className={styles.reelIcon}>
-              <PlayIcon />
-            </span>
-            Watch showreel
-          </button>
-          <a href="#contact" className="btn btn-red">
-            {hero.cta}
-          </a>
+          <div className={styles.actions}>
+            <button type="button" className={`btn btn-glass ${styles.reelButton}`} onClick={() => setReelOpen(true)}>
+              <span className={styles.reelIcon}>
+                <PlayIcon />
+              </span>
+              Watch showreel
+            </button>
+            <a href="#contact" className="btn btn-red">
+              {hero.cta}
+            </a>
+          </div>
         </div>
       </div>
 

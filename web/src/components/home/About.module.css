@@ -18,12 +18,40 @@
   gap: 24px;
 }
 
+.heading {
+  font-size: clamp(30px, 3.4vw, 48px);
+  line-height: 1.12;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
 .lead {
-  font-size: clamp(26px, 2.8vw, 40px);
-  line-height: 1.25;
-  font-weight: 500;
-  letter-spacing: -0.025em;
+  max-width: 760px;
+  font-size: clamp(19px, 1.7vw, 24px);
+  line-height: 1.45;
+  color: rgba(245, 245, 244, 0.86);
   text-wrap: pretty;
+}
+
+.services {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.service {
+  height: 40px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .brand {
