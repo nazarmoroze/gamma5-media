@@ -5,6 +5,7 @@ import { Contact } from "@/components/home/Contact";
 import { Hero } from "@/components/home/Hero";
 import { Portfolio } from "@/components/home/Portfolio";
 import { JsonLd } from "@/components/site/JsonLd";
+import { PageTransition } from "@/components/site/PageTransition";
 import { contacts, services, site } from "@/content/home";
 import { sanityFetch } from "@/sanity/fetch";
 import { CASES_QUERY } from "@/sanity/queries";
@@ -55,12 +56,14 @@ export default async function Home() {
   const featured = cases.filter((item) => item.featured);
 
   return (
-    <main>
-      <JsonLd data={organizationJsonLd} />
-      <Hero />
-      <About />
-      <Portfolio cases={featured.length > 0 ? featured : cases} />
-      <Contact />
-    </main>
+    <PageTransition>
+      <main>
+        <JsonLd data={organizationJsonLd} />
+        <Hero />
+        <About />
+        <Portfolio cases={featured.length > 0 ? featured : cases} />
+        <Contact />
+      </main>
+    </PageTransition>
   );
 }

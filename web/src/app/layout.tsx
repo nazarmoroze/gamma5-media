@@ -45,7 +45,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={instrumentSans.variable}>
+    <html lang="en" className={instrumentSans.variable} data-scroll-behavior="smooth">
       <body id="top">
         <Header />
         {children}

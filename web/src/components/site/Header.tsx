@@ -61,7 +61,7 @@ export function Header() {
   const close = () => setOpen(false);
 
   return (
-    <header className={styles.header} data-open={open}>
+    <header className={styles.header} data-open={open} style={{ viewTransitionName: "site-header" }}>
       <div className={styles.bar}>
         <Link href="/" className={styles.logo} aria-label="GAMMA5 — home" onClick={close}>
           <Logo />
