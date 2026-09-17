@@ -1,6 +1,3 @@
-import Link from "next/link";
-
-import { ArrowRightIcon } from "@/components/icons";
 import { WorkGrid } from "@/components/work/WorkGrid";
 import type { CaseSummary } from "@/components/work/types";
 import { portfolio } from "@/content/home";
@@ -14,6 +11,7 @@ export function Portfolio({ cases }: { cases: CaseSummary[] }) {
         <WorkGrid
           cases={cases}
           extraTile={{ href: "/work", kicker: "Portfolio", title: "See all our projects.", label: "View all work" }}
+          moreLink={{ href: "/work", label: "View all work" }}
           heading={
             <>
               <span className="eyebrow">Portfolio</span>
@@ -24,12 +22,6 @@ export function Portfolio({ cases }: { cases: CaseSummary[] }) {
             </>
           }
         />
-        <div className={styles.more}>
-          <Link href="/work" className="btn btn-outline">
-            View all work
-            <ArrowRightIcon />
-          </Link>
-        </div>
       </div>
     </section>
   );

@@ -29,9 +29,11 @@ type WorkGridProps = {
   heading: ReactNode;
   /** Second square tile, used when the red "your project" tile alone can't complete the last row. */
   extraTile?: Tile;
+  /** Link under the grid. Hidden on desktop while the extra tile already points to the same place. */
+  moreLink?: { href: string; label: string };
 };
 
-export function WorkGrid({ cases, heading, extraTile }: WorkGridProps) {
+export function WorkGrid({ cases, heading, extraTile, moreLink }: WorkGridProps) {
   const [filter, setFilter] = useState<Filter>("all");
   const [activeId, setActiveId] = useState<string | null>(null);
   const [indicator, setIndicator] = useState({ x: 0, w: 0 });
@@ -149,6 +151,15 @@ export function WorkGrid({ cases, heading, extraTile }: WorkGridProps) {
           </Link>
         )}
       </div>
+
+      {moreLink && (
+        <div className={`${styles.more} ${showExtra ? styles.moreMobileOnly : ""}`}>
+          <Link href={moreLink.href} className="btn btn-outline">
+            {moreLink.label}
+            <ArrowRightIcon />
+          </Link>
+        </div>
+      )}
 
       <VideoDialog
         open={active !== null}
