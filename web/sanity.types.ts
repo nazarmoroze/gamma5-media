@@ -15,6 +15,104 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type SanityImageAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+};
+
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
+export type Case = {
+  _id: string;
+  _type: "case";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  client?: string;
+  category?: "commercial" | "youtube" | "short";
+  year?: number;
+  scope?: Array<string>;
+  summary?: string;
+  featured?: boolean;
+  order?: number;
+  cover?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  fullVideoFile?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  fullVideoUrl?: string;
+  previewVideoFile?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  previewVideoUrl?: string;
+  orientation?: "horizontal" | "vertical";
+  gallery?: Array<{
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    caption?: string;
+    _type: "image";
+    _key: string;
+  }>;
+  brief?: string;
+  idea?: string;
+  result?: string;
+  credits?: Array<{
+    role?: string;
+    name?: string;
+    _type: "credit";
+    _key: string;
+  }>;
+  testimonial?: {
+    quote?: string;
+    author?: string;
+    role?: string;
+  };
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type Slug = {
+  _type: "slug";
+  current?: string;
+  source?: string;
+};
+
 export type SanityImagePaletteSwatch = {
   _type: "sanity.imagePaletteSwatch";
   background?: string;
@@ -51,22 +149,6 @@ export type SanityImageMetadata = {
   thumbHash?: string;
   hasAlpha?: boolean;
   isOpaque?: boolean;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
 };
 
 export type SanityFileAsset = {
@@ -128,21 +210,132 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type Slug = {
-  _type: "slug";
-  current?: string;
-  source?: string;
-};
-
 export type AllSanitySchemaTypes =
+  | SanityImageAssetReference
+  | SanityFileAssetReference
+  | Case
+  | SanityImageCrop
+  | SanityImageHotspot
+  | Slug
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
   | SanityImageMetadata
-  | SanityImageHotspot
-  | SanityImageCrop
   | SanityFileAsset
   | SanityAssetSourceData
   | SanityImageAsset
-  | Geopoint
-  | Slug;
+  | Geopoint;
+
+// Source: ../web/src/sanity/queries.ts
+// Variable: CASES_QUERY
+// Query: *[_type == "case" && defined(slug.current)] | order(coalesce(order, 999) asc, year desc) {    _id,    title,    "slug": slug.current,    client,    category,    year,    featured,    orientation,    cover { alt, hotspot, crop, asset->{ _id, url, metadata { lqip, dimensions { width, height } } } },    "fullVideo": coalesce(fullVideoFile.asset->url, fullVideoUrl),    "previewVideo": coalesce(previewVideoFile.asset->url, previewVideoUrl)  }
+export type CASES_QUERY_RESULT = Array<{
+  _id: string;
+  title: string | null;
+  slug: string | null;
+  client: string | null;
+  category: "commercial" | "short" | "youtube" | null;
+  year: number | null;
+  featured: boolean | null;
+  orientation: "horizontal" | "vertical" | null;
+  cover: {
+    alt: string | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+    asset: {
+      _id: string;
+      url: string | null;
+      metadata: {
+        lqip: string | null;
+        dimensions: {
+          width: number | null;
+          height: number | null;
+        } | null;
+      } | null;
+    } | null;
+  } | null;
+  fullVideo: string | null;
+  previewVideo: string | null;
+}>;
+
+// Source: ../web/src/sanity/queries.ts
+// Variable: CASE_SLUGS_QUERY
+// Query: *[_type == "case" && defined(slug.current)].slug.current
+export type CASE_SLUGS_QUERY_RESULT = Array<string | null>;
+
+// Source: ../web/src/sanity/queries.ts
+// Variable: CASE_QUERY
+// Query: *[_type == "case" && slug.current == $slug][0] {    _id,    title,    "slug": slug.current,    client,    category,    year,    scope,    summary,    orientation,    cover { alt, hotspot, crop, asset->{ _id, url, metadata { lqip, dimensions { width, height } } } },    "fullVideo": coalesce(fullVideoFile.asset->url, fullVideoUrl),    "previewVideo": coalesce(previewVideoFile.asset->url, previewVideoUrl),    gallery[] { _key, alt, caption, hotspot, crop, asset->{ _id, url, metadata { lqip, dimensions { width, height } } } },    brief,    idea,    result,    credits[] { _key, role, name },    testimonial { quote, author, role }  }
+export type CASE_QUERY_RESULT = {
+  _id: string;
+  title: string | null;
+  slug: string | null;
+  client: string | null;
+  category: "commercial" | "short" | "youtube" | null;
+  year: number | null;
+  scope: Array<string> | null;
+  summary: string | null;
+  orientation: "horizontal" | "vertical" | null;
+  cover: {
+    alt: string | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+    asset: {
+      _id: string;
+      url: string | null;
+      metadata: {
+        lqip: string | null;
+        dimensions: {
+          width: number | null;
+          height: number | null;
+        } | null;
+      } | null;
+    } | null;
+  } | null;
+  fullVideo: string | null;
+  previewVideo: string | null;
+  gallery: Array<{
+    _key: string;
+    alt: string | null;
+    caption: string | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+    asset: {
+      _id: string;
+      url: string | null;
+      metadata: {
+        lqip: string | null;
+        dimensions: {
+          width: number | null;
+          height: number | null;
+        } | null;
+      } | null;
+    } | null;
+  }> | null;
+  brief: string | null;
+  idea: string | null;
+  result: string | null;
+  credits: Array<{
+    _key: string;
+    role: string | null;
+    name: string | null;
+  }> | null;
+  testimonial: {
+    quote: string | null;
+    author: string | null;
+    role: string | null;
+  } | null;
+} | null;
+
+// Query TypeMap
+declare global {
+  interface SanityQueries {
+    '\n  *[_type == "case" && defined(slug.current)] | order(coalesce(order, 999) asc, year desc) {\n    _id,\n    title,\n    "slug": slug.current,\n    client,\n    category,\n    year,\n    featured,\n    orientation,\n    cover { alt, hotspot, crop, asset->{ _id, url, metadata { lqip, dimensions { width, height } } } },\n    "fullVideo": coalesce(fullVideoFile.asset->url, fullVideoUrl),\n    "previewVideo": coalesce(previewVideoFile.asset->url, previewVideoUrl)\n  }\n': CASES_QUERY_RESULT;
+    '\n  *[_type == "case" && defined(slug.current)].slug.current\n': CASE_SLUGS_QUERY_RESULT;
+    '\n  *[_type == "case" && slug.current == $slug][0] {\n    _id,\n    title,\n    "slug": slug.current,\n    client,\n    category,\n    year,\n    scope,\n    summary,\n    orientation,\n    cover { alt, hotspot, crop, asset->{ _id, url, metadata { lqip, dimensions { width, height } } } },\n    "fullVideo": coalesce(fullVideoFile.asset->url, fullVideoUrl),\n    "previewVideo": coalesce(previewVideoFile.asset->url, previewVideoUrl),\n    gallery[] { _key, alt, caption, hotspot, crop, asset->{ _id, url, metadata { lqip, dimensions { width, height } } } },\n    brief,\n    idea,\n    result,\n    credits[] { _key, role, name },\n    testimonial { quote, author, role }\n  }\n': CASE_QUERY_RESULT;
+  }
+}
+// Lets @sanity/client releases that predate the global registry read it too
+declare module "@sanity/client" {
+  interface SanityQueries extends globalThis.SanityQueries {}
+}

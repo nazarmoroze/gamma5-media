@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 
 import { Logo } from "@/components/Logo";
@@ -9,9 +10,9 @@ import { contacts } from "@/content/home";
 import styles from "./Header.module.css";
 
 const links = [
-  { href: "#about", label: "About" },
-  { href: "#portfolio", label: "Portfolio" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#about", label: "About" },
+  { href: "/work", label: "Work" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 const socials = [
@@ -62,22 +63,22 @@ export function Header() {
   return (
     <header className={styles.header} data-open={open}>
       <div className={styles.bar}>
-        <a href="#top" className={styles.logo} aria-label="GAMMA5 — home" onClick={close}>
+        <Link href="/" className={styles.logo} aria-label="GAMMA5 — home" onClick={close}>
           <Logo />
-        </a>
+        </Link>
 
         <nav aria-label="Primary" className={styles.nav}>
           {links.map((link) => (
-            <a key={link.href} href={link.href} className={styles.navLink}>
+            <Link key={link.href} href={link.href} className={styles.navLink}>
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
         <div className={styles.actions}>
-          <a href="#contact" className={`btn btn-red ${styles.cta}`} onClick={close}>
+          <Link href="/#contact" className={`btn btn-red ${styles.cta}`} onClick={close}>
             Contact us
-          </a>
+          </Link>
           <button
             ref={buttonRef}
             type="button"
@@ -98,7 +99,7 @@ export function Header() {
           <ol className={styles.menuList}>
             {links.map((link, i) => (
               <li key={link.href} className={styles.menuItem} style={stagger(i)}>
-                <a
+                <Link
                   ref={i === 0 ? firstLinkRef : undefined}
                   href={link.href}
                   className={styles.menuLink}
@@ -111,7 +112,7 @@ export function Header() {
                   <span className={styles.menuArrow}>
                     <ArrowUpRightIcon size={20} />
                   </span>
-                </a>
+                </Link>
               </li>
             ))}
           </ol>
@@ -131,9 +132,14 @@ export function Header() {
               </a>
             ))}
           </div>
-          <a href="#contact" className={`btn btn-red ${styles.reveal} ${styles.footCta}`} style={stagger(5)} onClick={close}>
-            Start a project
-          </a>
+          <Link
+            href="/#contact"
+            className={`btn btn-red ${styles.reveal} ${styles.footCta}`}
+            style={stagger(5)}
+            onClick={close}
+          >
+            Discuss your project
+          </Link>
         </div>
       </div>
     </header>

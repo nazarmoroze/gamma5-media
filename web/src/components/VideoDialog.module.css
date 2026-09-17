@@ -15,6 +15,7 @@
 
 .dialog[open] {
   display: flex;
+  overflow-y: auto;
 }
 
 .dialog::backdrop {
@@ -109,7 +110,7 @@
 .video {
   width: 100%;
   height: auto;
-  max-height: 76dvh;
+  max-height: 70dvh;
   object-fit: contain;
   background: #000;
 }
@@ -147,6 +148,34 @@
   font-size: 15px;
   font-weight: 600;
   white-space: nowrap;
+}
+
+.note {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(7, 7, 7, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.foot {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.action.action {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .action.action {
+    width: auto;
+  }
 }
 
 @keyframes pop {
