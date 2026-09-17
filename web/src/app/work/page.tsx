@@ -6,32 +6,34 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { PageTransition } from "@/components/site/PageTransition";
 import { WorkGrid } from "@/components/work/WorkGrid";
 import { caseHref } from "@/components/work/types";
+import { pageMetadata } from "@/lib/metadata";
 import { contactLinks, siteUrl } from "@/lib/site";
 import { absoluteUrl, breadcrumbList, websiteId } from "@/lib/structured-data";
 import { sanityFetch } from "@/sanity/live";
-import { CASES_QUERY, SETTINGS_QUERY } from "@/sanity/queries";
+import { CASES_QUERY, SETTINGS_QUERY, WORK_PAGE_QUERY } from "@/sanity/queries";
 
 import styles from "./page.module.css";
 
-const description =
+// Used until the Work page document in Sanity has its own SEO fields.
+const FALLBACK_TITLE = "Video Production Portfolio";
+const FALLBACK_DESCRIPTION =
   "Commercials, real estate films, YouTube production and short-form videos made by GAMMA5, a video production company in Cyprus.";
 
-export const metadata: Metadata = {
-  title: "Video Production Portfolio",
-  description,
-  alternates: { canonical: "/work" },
-  openGraph: {
-    type: "website",
-    url: "/work",
-    title: "Video Production Portfolio | GAMMA5",
-    description,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { data } = await sanityFetch({ query: WORK_PAGE_QUERY, stega: false });
+  return pageMetadata({
+    title: data?.seo?.title || FALLBACK_TITLE,
+    description: data?.seo?.description || FALLBACK_DESCRIPTION,
+    path: "/work",
+    image: data?.seo?.image,
+  });
+}
 
 export default async function WorkPage() {
-  const [{ data: cases }, { data: settings }] = await Promise.all([
+  const [{ data: cases }, { data: settings }, { data: page }] = await Promise.all([
     sanityFetch({ query: CASES_QUERY }),
     sanityFetch({ query: SETTINGS_QUERY }),
+    sanityFetch({ query: WORK_PAGE_QUERY, stega: false }),
   ]);
   const instagram = contactLinks(settings).find((link) => link.key === "instagram");
   const structuredData = {
@@ -41,8 +43,8 @@ export default async function WorkPage() {
         "@type": "CollectionPage",
         "@id": `${siteUrl}/work#page`,
         url: absoluteUrl("/work"),
-        name: "Video Production Portfolio",
-        description,
+        name: page?.seo?.title || FALLBACK_TITLE,
+        description: page?.seo?.description || FALLBACK_DESCRIPTION,
         isPartOf: { "@id": websiteId },
         mainEntity: {
           "@type": "ItemList",

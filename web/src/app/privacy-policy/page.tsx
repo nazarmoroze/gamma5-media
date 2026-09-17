@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { JsonLd } from "@/components/site/JsonLd";
 import { PageTransition } from "@/components/site/PageTransition";
+import { pageMetadata } from "@/lib/metadata";
 import { newTab } from "@/lib/site";
 import { breadcrumbList } from "@/lib/structured-data";
 import { sanityFetch } from "@/sanity/live";
@@ -14,14 +15,12 @@ import styles from "./page.module.css";
 export async function generateMetadata(): Promise<Metadata> {
   const { data } = await sanityFetch({ query: PRIVACY_QUERY, stega: false });
   if (!data) return {};
-  const title = data.title || "Privacy Policy";
-
-  return {
-    title,
-    description: data.description ?? undefined,
-    alternates: { canonical: "/privacy-policy" },
-    openGraph: { type: "website", url: "/privacy-policy", title: `${title} | GAMMA5`, description: data.description ?? undefined },
-  };
+  return pageMetadata({
+    title: data.title || "Privacy Policy",
+    description: data.description,
+    path: "/privacy-policy",
+    image: data.shareImage,
+  });
 }
 
 const components: PortableTextComponents = {

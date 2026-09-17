@@ -10,6 +10,7 @@ import { CtaBand } from "@/components/site/CtaBand";
 import { JsonLd } from "@/components/site/JsonLd";
 import { PageTransition } from "@/components/site/PageTransition";
 import { caseCategory, caseHref, categoryLabel, isVertical, type CaseCategory } from "@/components/work/types";
+import { pageMetadata } from "@/lib/metadata";
 import { siteUrl } from "@/lib/site";
 import { absoluteUrl, breadcrumbList, organizationId } from "@/lib/structured-data";
 import { client } from "@/sanity/client";
@@ -55,22 +56,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!item) return {};
 
   const { title, description } = caseSeo(item);
-  const image = item.cover?.asset?._id ? urlFor(item.cover.asset._id).width(1200).height(630).url() : undefined;
-
-  return {
-    title,
-    description,
-    alternates: { canonical: caseHref(item.slug) },
-    openGraph: {
-      type: "article",
-      url: caseHref(item.slug),
-      title: `${title} | GAMMA5`,
-      description,
-      locale: "en_US",
-      images: image ? [image] : undefined,
-    },
-    twitter: { card: "summary_large_image", title: `${title} | GAMMA5`, description, images: image ? [image] : undefined },
-  };
+  // The case's own share image, otherwise the default GAMMA5 image (covers are often too small to share).
+  return pageMetadata({ title, description, path: caseHref(item.slug), image: item.shareImage, type: "article" });
 }
 
 export default async function CasePage({ params }: Props) {

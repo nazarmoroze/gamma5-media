@@ -1,6 +1,8 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 import {LockIcon} from '@sanity/icons/Lock'
 
+import {shareImageField} from '../fields/shareImage'
+
 export const privacyPolicyType = defineType({
   name: 'privacyPolicy',
   title: 'Privacy policy',
@@ -22,6 +24,7 @@ export const privacyPolicyType = defineType({
       rows: 2,
       validation: (rule) => rule.required().min(70).max(160).warning('Aim for 120–160 characters'),
     }),
+    shareImageField(),
     defineField({
       name: 'body',
       type: 'array',

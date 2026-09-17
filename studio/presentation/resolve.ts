@@ -4,6 +4,7 @@ export const resolve: PresentationPluginOptions['resolve'] = {
   // Which document opens in the side panel for a given page in the preview.
   mainDocuments: defineDocuments([
     {route: '/', filter: `_type == "homePage" && _id == "homePage"`},
+    {route: '/work', filter: `_type == "workPage" && _id == "workPage"`},
     {route: '/work/:slug', filter: `_type == "case" && slug.current == $slug`},
     {route: '/privacy-policy', filter: `_type == "privacyPolicy" && _id == "privacyPolicy"`},
   ]),
@@ -13,6 +14,11 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       message: 'This document is the home page',
       tone: 'positive',
       locations: [{title: 'Home', href: '/'}],
+    }),
+    workPage: defineLocations({
+      message: 'This document is the portfolio page',
+      tone: 'positive',
+      locations: [{title: 'Work', href: '/work'}],
     }),
     privacyPolicy: defineLocations({
       message: 'This document is the privacy policy page',

@@ -6,7 +6,7 @@ import {LockIcon} from '@sanity/icons/Lock'
 import {PlayIcon} from '@sanity/icons/Play'
 
 // One document each, with a fixed ID. Kept out of "create new" and destructive actions.
-export const SINGLETONS = ['homePage', 'siteSettings', 'privacyPolicy']
+export const SINGLETONS = ['homePage', 'workPage', 'siteSettings', 'privacyPolicy']
 
 // Created by the website's contact form, never from the Studio.
 export const FORM_SUBMISSIONS = ['quoteRequest']
@@ -20,6 +20,11 @@ export const structure: StructureResolver = (S) =>
         .id('homePage')
         .icon(HomeIcon)
         .child(S.document().schemaType('homePage').documentId('homePage').title('Home page')),
+      S.listItem()
+        .title('Work page')
+        .id('workPage')
+        .icon(PlayIcon)
+        .child(S.document().schemaType('workPage').documentId('workPage').title('Work page')),
       S.listItem()
         .title('Site settings')
         .id('siteSettings')

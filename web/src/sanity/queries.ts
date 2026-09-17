@@ -73,7 +73,7 @@ export const HOME_QUERY = defineQuery(`
     seo {
       title,
       description,
-      image { alt, asset->{ _id } }
+      image { alt, hotspot, crop, asset->{ _id } }
     }
   }
 `);
@@ -83,7 +83,18 @@ export const PRIVACY_QUERY = defineQuery(`
     title,
     lastUpdated,
     description,
+    shareImage { alt, hotspot, crop, asset->{ _id } },
     body
+  }
+`);
+
+export const WORK_PAGE_QUERY = defineQuery(`
+  *[_id == "workPage" && _type == "workPage"][0] {
+    seo {
+      title,
+      description,
+      image { alt, hotspot, crop, asset->{ _id } }
+    }
   }
 `);
 
@@ -102,6 +113,7 @@ export const CASE_QUERY = defineQuery(`
     ${caseCardFields},
     _createdAt,
     releaseDate,
+    shareImage { alt, hotspot, crop, asset->{ _id } },
     scope,
     summary,
     gallery[] { _key, caption, ${imageFields} },
