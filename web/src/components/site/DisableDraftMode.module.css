@@ -1,0 +1,16 @@
+.button {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 80;
+  height: 44px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--bg);
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}

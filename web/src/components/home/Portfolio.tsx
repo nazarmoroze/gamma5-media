@@ -1,10 +1,14 @@
 import { WorkGrid } from "@/components/work/WorkGrid";
-import type { CaseSummary } from "@/components/work/types";
-import { portfolio } from "@/content/home";
+import type { HomeData } from "@/sanity/types";
 
 import styles from "./Portfolio.module.css";
 
-export function Portfolio({ cases }: { cases: CaseSummary[] }) {
+type PortfolioProps = { portfolio: NonNullable<HomeData["portfolio"]> };
+
+export function Portfolio({ portfolio }: PortfolioProps) {
+  // References to unpublished or deleted cases resolve to null; skip them.
+  const cases = portfolio.cases?.filter((item) => item !== null) ?? [];
+
   return (
     <section id="portfolio" className={styles.portfolio} aria-labelledby="portfolio-title">
       <div className="container">
@@ -18,7 +22,7 @@ export function Portfolio({ cases }: { cases: CaseSummary[] }) {
               <h2 id="portfolio-title" className="section-title">
                 {portfolio.title}
               </h2>
-              <p className={styles.intro}>{portfolio.intro}</p>
+              {portfolio.intro && <p className={styles.intro}>{portfolio.intro}</p>}
             </>
           }
         />

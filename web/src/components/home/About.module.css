@@ -34,26 +34,6 @@
   text-wrap: pretty;
 }
 
-.services {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.service {
-  height: 40px;
-  padding: 0 16px;
-  display: flex;
-  align-items: center;
-  border-radius: 999px;
-  border: 1px solid var(--line-strong);
-  font-size: 15px;
-  font-weight: 500;
-}
-
 .brand {
   color: var(--red);
 }
@@ -125,10 +105,26 @@
 }
 
 .logos {
-  height: 44px;
+  margin: 0;
+  padding: 0 28px;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 56px;
+}
+
+.logo {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 32px;
   width: auto;
-  max-width: none;
-  opacity: 0.85;
+  max-width: 180px;
+  object-fit: contain;
+  opacity: 0.8;
 }
 
 @keyframes marquee {
@@ -190,6 +186,12 @@
   }
 
   .logos {
-    height: 64px;
+    padding: 0 40px;
+    gap: 80px;
+  }
+
+  .logo img {
+    height: 44px;
+    max-width: 220px;
   }
 }

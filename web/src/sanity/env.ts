@@ -5,3 +5,5 @@ export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "e30j6wkp"
 export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
 
 export const apiVersion = "2026-09-17";
+
+export const studioUrl = process.env.NEXT_PUBLIC_SANITY_STUDIO_URL || "https://studio.gamma5media.com";

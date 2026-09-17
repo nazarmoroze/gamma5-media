@@ -74,13 +74,6 @@ export const caseType = defineType({
       validation: (rule) => rule.max(240).warning('Keep it under 240 characters'),
     }),
     defineField({
-      name: 'featured',
-      title: 'Show on the home page',
-      type: 'boolean',
-      group: 'overview',
-      initialValue: false,
-    }),
-    defineField({
       name: 'order',
       type: 'number',
       group: 'overview',

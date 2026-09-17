@@ -1,5 +1,6 @@
 "use client";
 
+import { stegaClean } from "next-sanity";
 import Link from "next/link";
 import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 
@@ -9,7 +10,7 @@ import { urlFor } from "@/sanity/image";
 
 import { WorkCard } from "./WorkCard";
 import styles from "./WorkGrid.module.css";
-import { caseHref, categoryLabel, categoryLabels, type CaseCategory, type CaseSummary } from "./types";
+import { caseCategory, caseHref, categoryLabel, categoryLabels, isVertical, type CaseCategory, type CaseSummary } from "./types";
 
 type Filter = "all" | CaseCategory;
 
@@ -39,7 +40,7 @@ export function WorkGrid({ cases, heading, extraTile, moreLink }: WorkGridProps)
   const [indicator, setIndicator] = useState({ x: 0, w: 0 });
   const buttons = useRef<Partial<Record<Filter, HTMLButtonElement | null>>>({});
 
-  const list = filter === "all" ? cases : cases.filter((item) => item.category === filter);
+  const list = filter === "all" ? cases : cases.filter((item) => caseCategory(item.category) === filter);
   // Every tile is square, so on the 3-column desktop grid the last row is completed
   // with the red "your project" tile and, when two cells are missing, the extra tile.
   const missing = list.length === 0 ? 0 : (3 - (list.length % 3)) % 3;
@@ -63,7 +64,7 @@ export function WorkGrid({ cases, heading, extraTile, moreLink }: WorkGridProps)
     setActiveId(list[(activeIndex + delta + list.length) % list.length]._id);
   };
 
-  const activeSrc = active?.fullVideo ?? active?.previewVideo ?? undefined;
+  const activeSrc = stegaClean(active?.fullVideo ?? active?.previewVideo) ?? undefined;
   const activePoster = active?.cover?.asset?._id ? urlFor(active.cover.asset._id).width(1600).url() : "/media/house.jpg";
 
   return (
@@ -79,7 +80,7 @@ export function WorkGrid({ cases, heading, extraTile, moreLink }: WorkGridProps)
               style={{ width: indicator.w, transform: `translate3d(${indicator.x}px,0,0)` }}
             />
             {filters.map((f) => {
-              const count = f.id === "all" ? cases.length : cases.filter((item) => item.category === f.id).length;
+              const count = f.id === "all" ? cases.length : cases.filter((item) => caseCategory(item.category) === f.id).length;
               return (
                 <button
                   key={f.id}
@@ -170,7 +171,7 @@ export function WorkGrid({ cases, heading, extraTile, moreLink }: WorkGridProps)
         previewNote={active && !active.fullVideo && active.previewVideo ? "Preview · full film coming soon" : undefined}
         poster={activePoster}
         posterAlt={active?.cover?.alt ?? ""}
-        vertical={active?.orientation === "vertical"}
+        vertical={isVertical(active?.orientation ?? null)}
         action={active ? { href: caseHref(active.slug), label: "View case study" } : undefined}
         counter={active ? `${pad(activeIndex + 1)} / ${pad(list.length)}` : undefined}
         onPrev={list.length > 1 ? () => step(-1) : undefined}

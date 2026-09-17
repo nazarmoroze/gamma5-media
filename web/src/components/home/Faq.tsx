@@ -1,11 +1,15 @@
 import Link from "next/link";
 
 import { ArrowRightIcon } from "@/components/icons";
-import { faq } from "@/content/home";
+import type { HomeData } from "@/sanity/types";
 
 import styles from "./Faq.module.css";
 
-export function Faq() {
+type FaqProps = { faq: NonNullable<HomeData["faq"]> };
+
+export function Faq({ faq }: FaqProps) {
+  const items = faq.items?.filter((item) => item.question && item.answer) ?? [];
+
   return (
     <section id="faq" className={styles.faq} aria-labelledby="faq-title">
       <div className={`container ${styles.grid}`}>
@@ -14,7 +18,7 @@ export function Faq() {
           <h2 id="faq-title" className="section-title">
             {faq.title}
           </h2>
-          <p className={styles.lede}>{faq.intro}</p>
+          {faq.intro && <p className={styles.lede}>{faq.intro}</p>}
           <Link href="#contact" className={`btn btn-outline ${styles.ask}`}>
             Ask a question
             <ArrowRightIcon />
@@ -22,8 +26,8 @@ export function Faq() {
         </div>
 
         <div className={styles.list}>
-          {faq.items.map((item) => (
-            <details key={item.question} name="faq" className={styles.item}>
+          {items.map((item) => (
+            <details key={item._key} name="faq" className={styles.item}>
               <summary className={styles.question}>
                 <h3 className={styles.questionText}>{item.question}</h3>
                 <span className={styles.icon} aria-hidden="true" />

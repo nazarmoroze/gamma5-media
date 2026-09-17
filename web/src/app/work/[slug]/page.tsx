@@ -7,25 +7,24 @@ import { CaseVideo } from "@/components/case/CaseVideo";
 import { ArrowRightIcon, ChevronLeftIcon } from "@/components/icons";
 import { CtaBand } from "@/components/site/CtaBand";
 import { PageTransition } from "@/components/site/PageTransition";
-import { caseHref, categoryLabel } from "@/components/work/types";
+import { caseHref, categoryLabel, isVertical } from "@/components/work/types";
 import { client } from "@/sanity/client";
-import { sanityFetch } from "@/sanity/fetch";
 import { urlFor } from "@/sanity/image";
+import { sanityFetch } from "@/sanity/live";
 import { CASE_QUERY, CASE_SLUGS_QUERY, CASES_QUERY } from "@/sanity/queries";
 
-import { openGraphDefaults } from "../../shared-metadata";
 import styles from "./page.module.css";
 
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {
-  const slugs = await client.withConfig({ useCdn: false }).fetch(CASE_SLUGS_QUERY);
+  const slugs = await client.withConfig({ useCdn: false }).fetch(CASE_SLUGS_QUERY, {}, { perspective: "published" });
   return slugs.filter((slug): slug is string => Boolean(slug)).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const item = await sanityFetch({ query: CASE_QUERY, params: { slug } });
+  const { data: item } = await sanityFetch({ query: CASE_QUERY, params: { slug }, stega: false });
   if (!item) return {};
 
   const description =
@@ -41,16 +40,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: caseHref(item.slug),
       title: `${item.title} — ${item.client} | GAMMA5`,
       description,
-      siteName: openGraphDefaults.siteName,
-      locale: openGraphDefaults.locale,
-      images: image ? [image] : openGraphDefaults.images,
+      locale: "en_US",
+      images: image ? [image] : undefined,
     },
   };
 }
 
 export default async function CasePage({ params }: Props) {
   const { slug } = await params;
-  const [item, cases] = await Promise.all([
+  const [{ data: item }, { data: cases }] = await Promise.all([
     sanityFetch({ query: CASE_QUERY, params: { slug } }),
     sanityFetch({ query: CASES_QUERY }),
   ]);
@@ -96,7 +94,7 @@ export default async function CasePage({ params }: Props) {
             cover={item.cover}
             fullVideo={item.fullVideo}
             previewVideo={item.previewVideo}
-            vertical={item.orientation === "vertical"}
+            vertical={isVertical(item.orientation)}
           />
 
           <dl className={styles.facts}>
