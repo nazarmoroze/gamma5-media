@@ -34,17 +34,9 @@
   border-bottom: 1px solid var(--line);
 }
 
-/* Smooth height animation where ::details-content is supported; others open instantly. */
-.item::details-content {
-  block-size: 0;
+/* The height animation runs in FaqList; the panel only clips the answer while it moves. */
+.panel {
   overflow: hidden;
-  transition:
-    block-size 320ms var(--ease-out),
-    content-visibility 320ms allow-discrete;
-}
-
-.item[open]::details-content {
-  block-size: auto;
 }
 
 .question {
@@ -78,7 +70,7 @@
   background: rgba(255, 255, 255, 0.08);
   transition:
     background-color 200ms ease,
-    transform 300ms var(--ease-out);
+    transform 440ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .icon::before,
@@ -96,15 +88,15 @@
 
 .icon::after {
   transform: rotate(90deg);
-  transition: transform 300ms var(--ease-out);
+  transition: transform 440ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.item[open] .icon {
+.item[data-state="open"] .icon {
   background: var(--red);
   transform: rotate(180deg);
 }
 
-.item[open] .icon::after {
+.item[data-state="open"] .icon::after {
   transform: rotate(0deg);
 }
 
@@ -121,7 +113,7 @@
     background: rgba(255, 255, 255, 0.16);
   }
 
-  .item[open] .question:hover .icon {
+  .item[data-state="open"] .question:hover .icon {
     background: var(--red);
   }
 }
