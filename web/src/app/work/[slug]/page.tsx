@@ -53,7 +53,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const { data: item } = await sanityFetch({ query: CASE_QUERY, params: { slug }, stega: false });
-  if (!item) return {};
+  if (!item) notFound();
 
   const { title, description } = caseSeo(item);
   // The case's own share image, otherwise the default GAMMA5 image (covers are often too small to share).
