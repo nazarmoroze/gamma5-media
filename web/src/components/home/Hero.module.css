@@ -44,8 +44,8 @@
 }
 
 .title {
-  max-width: 1080px;
-  font-size: clamp(50px, 7.2vw, 104px);
+  max-width: 1160px;
+  font-size: clamp(44px, 6.2vw, 92px);
   line-height: 0.96;
   font-weight: 600;
   letter-spacing: -0.045em;

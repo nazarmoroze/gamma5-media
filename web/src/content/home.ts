@@ -28,7 +28,7 @@ export const services = [
 ] as const;
 
 export const hero = {
-  title: "Video production that brings you clients",
+  title: "Full‑Cycle Video Production for Brands and Businesses",
   subtitle: "Commercials, real estate and social video for brands in Cyprus and worldwide.",
   cta: "Discuss your project",
   showreel: {
