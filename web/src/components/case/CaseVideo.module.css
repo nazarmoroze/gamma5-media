@@ -1,0 +1,85 @@
+.frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #000;
+}
+
+.vertical {
+  width: min(100%, 420px);
+  aspect-ratio: 9 / 16;
+  margin-inline: auto;
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+}
+
+.frame video[controls] {
+  object-fit: contain;
+}
+
+.play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: linear-gradient(180deg, rgba(7, 7, 7, 0.1), rgba(7, 7, 7, 0.45));
+  color: #fff;
+}
+
+.playIcon {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 260ms var(--ease-out);
+}
+
+.play:active .playIcon {
+  transform: scale(0.95);
+}
+
+.playLabel {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.note {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(7, 7, 7, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .play:hover .playIcon {
+    transform: scale(1.06);
+  }
+}
+
+@media (min-width: 900px) {
+  .playIcon {
+    width: 104px;
+    height: 104px;
+  }
+}

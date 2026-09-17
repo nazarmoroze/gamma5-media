@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 
-import { ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "@/components/icons";
+import { ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "@/components/icons";
 
 import styles from "./VideoDialog.module.css";
 
@@ -13,9 +14,12 @@ type VideoDialogProps = {
   title: string;
   meta?: string;
   src?: string;
+  /** Set when `src` is only the short preview loop: it plays muted on repeat with this note. */
+  previewNote?: string;
   poster: string;
   posterAlt: string;
   vertical?: boolean;
+  action?: { href: string; label: string };
   counter?: string;
   onPrev?: () => void;
   onNext?: () => void;
@@ -27,9 +31,11 @@ export function VideoDialog({
   title,
   meta,
   src,
+  previewNote,
   poster,
   posterAlt,
   vertical,
+  action,
   counter,
   onPrev,
   onNext,
@@ -82,22 +88,51 @@ export function VideoDialog({
                   <ChevronRightIcon />
                 </button>
               )}
-              <button type="button" className={`${styles.round} ${styles.close}`} onClick={onClose} aria-label="Close">
+              <button
+                type="button"
+                className={`${styles.round} ${styles.close}`}
+                onClick={onClose}
+                aria-label="Close"
+                autoFocus
+              >
                 <CloseIcon />
               </button>
             </div>
           </div>
 
           <div className={[styles.frame, src ? "" : styles.placeholder, vertical ? styles.vertical : ""].join(" ")}>
-            {src ? (
+            {src && !previewNote && (
               <video key={src} className={styles.video} src={src} poster={poster} controls autoPlay playsInline />
-            ) : (
+            )}
+            {src && previewNote && (
               <>
-                <Image src={poster} alt={posterAlt} fill sizes="(min-width: 1280px) 1200px, 100vw" className={styles.poster} />
+                <video key={src} className={styles.video} src={src} poster={poster} autoPlay muted loop playsInline />
+                <span className={styles.note}>{previewNote}</span>
+              </>
+            )}
+            {!src && (
+              <>
+                <Image
+                  src={poster}
+                  alt={posterAlt}
+                  fill
+                  unoptimized
+                  sizes="(min-width: 1280px) 1200px, 100vw"
+                  className={styles.poster}
+                />
                 <span className={styles.soon}>Video coming soon</span>
               </>
             )}
           </div>
+
+          {action && (
+            <div className={styles.foot}>
+              <Link href={action.href} className={`btn btn-red ${styles.action}`}>
+                {action.label}
+                <ArrowRightIcon />
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </dialog>

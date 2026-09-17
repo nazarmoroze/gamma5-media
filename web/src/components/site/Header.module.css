@@ -1,0 +1,380 @@
+.header {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  z-index: 50;
+}
+
+.bar {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  height: 60px;
+  margin-inline: auto;
+  padding: 0 8px 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-radius: 999px;
+  background: rgba(12, 12, 12, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease;
+}
+
+/* While the menu is open the pill melts into the overlay behind it. */
+.header[data-open="true"] .bar {
+  background-color: rgba(12, 12, 12, 0);
+  border-color: rgba(255, 255, 255, 0);
+  transition-duration: 200ms;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  height: 44px;
+}
+
+.logo svg {
+  width: 104px;
+  height: auto;
+}
+
+.nav {
+  display: none;
+  align-items: center;
+  gap: 36px;
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(245, 245, 244, 0.72);
+}
+
+.navLink {
+  transition: color 200ms ease;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cta.cta {
+  height: 44px;
+  padding: 0 16px;
+  font-size: 15px;
+}
+
+.menuButton {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 200ms ease;
+}
+
+.menuButton:active {
+  transform: scale(0.97);
+}
+
+.burgerLine {
+  position: absolute;
+  left: 13px;
+  width: 18px;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+  transition: transform 360ms var(--ease-out);
+}
+
+.burgerLine:first-child {
+  top: 18px;
+}
+
+.burgerLine:last-child {
+  top: 24px;
+}
+
+.menuButton[aria-expanded="true"] .burgerLine:first-child {
+  transform: translate3d(0, 3px, 0) rotate(45deg);
+}
+
+.menuButton[aria-expanded="true"] .burgerLine:last-child {
+  transform: translate3d(0, -3px, 0) rotate(-45deg);
+}
+
+/* Full-screen menu that grows out of the header pill. */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  padding: 104px 16px calc(20px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 32px;
+  overflow-y: auto;
+  background: #0a0a0a;
+  clip-path: inset(12px 12px calc(100% - 72px) 12px round 30px);
+  visibility: hidden;
+  transition:
+    clip-path 420ms cubic-bezier(0.65, 0, 0.35, 1) 80ms,
+    visibility 0s linear 500ms;
+}
+
+.overlay[data-open="true"] {
+  clip-path: inset(0 0 0 0 round 0);
+  visibility: visible;
+  transition:
+    clip-path 700ms var(--ease-drawer),
+    visibility 0s;
+}
+
+.menuList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menuItem {
+  position: relative;
+}
+
+/* Divider draws in from the left, one row after another. */
+.menuItem::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: rgba(245, 245, 244, 0.12);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 200ms ease;
+}
+
+.overlay[data-open="true"] .menuItem::after {
+  transform: scaleX(1);
+  transition: transform 800ms var(--ease-out) calc(220ms + var(--i) * 60ms);
+}
+
+.menuLink {
+  height: 96px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.menuIndex {
+  align-self: flex-start;
+  margin-top: 24px;
+  width: 22px;
+  font-size: 13px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--red);
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.menuMask {
+  flex: 1;
+  overflow: hidden;
+  padding-block: 4px;
+}
+
+.menuLabel {
+  display: block;
+  font-size: 56px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  transform: translate3d(0, 110%, 0);
+  transition: transform 180ms ease;
+}
+
+.menuArrow {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  transform: scale(0.8);
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease,
+    background-color 200ms ease;
+}
+
+.overlay[data-open="true"] .menuLabel {
+  transform: none;
+  transition: transform 900ms var(--ease-out) calc(160ms + var(--i) * 60ms);
+}
+
+.overlay[data-open="true"] .menuIndex {
+  opacity: 1;
+  transition: opacity 500ms ease calc(320ms + var(--i) * 60ms);
+}
+
+.overlay[data-open="true"] .menuArrow {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 400ms ease calc(300ms + var(--i) * 60ms),
+    transform 600ms var(--ease-out) calc(300ms + var(--i) * 60ms),
+    background-color 200ms ease;
+}
+
+.menuLink:active .menuArrow {
+  background: var(--red);
+}
+
+.menuFoot {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.overlay[data-open="true"] .reveal {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 500ms ease calc(200ms + var(--i) * 60ms),
+    transform 700ms var(--ease-out) calc(200ms + var(--i) * 60ms);
+}
+
+.footLabel {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: var(--text-subtle);
+}
+
+.footEmail {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.social {
+  height: 44px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  font-size: 15px;
+  font-weight: 600;
+  transition:
+    background-color 200ms ease,
+    transform 160ms var(--ease-out);
+}
+
+.social:active {
+  transform: scale(0.97);
+}
+
+.footCta.footCta {
+  width: 100%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navLink:hover {
+    color: #fff;
+  }
+
+  .menuButton:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .menuLink:hover .menuArrow {
+    background: var(--red);
+  }
+
+  .social:hover {
+    background: rgba(245, 245, 244, 0.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .overlay[data-open="true"] {
+    clip-path: none;
+    transition: opacity 200ms ease, visibility 0s linear 200ms;
+  }
+
+  .overlay {
+    opacity: 0;
+  }
+
+  .overlay[data-open="true"] {
+    opacity: 1;
+    transition: opacity 200ms ease, visibility 0s;
+  }
+
+  .menuLabel,
+  .reveal,
+  .menuArrow {
+    transform: none;
+  }
+}
+
+@media (min-width: 900px) {
+  .header {
+    top: 24px;
+    left: 24px;
+    right: 24px;
+  }
+
+  .bar {
+    height: 72px;
+    padding: 0 12px 0 28px;
+  }
+
+  .logo svg {
+    width: 146px;
+  }
+
+  .nav {
+    display: flex;
+  }
+
+  .cta.cta {
+    height: 48px;
+    padding: 0 24px;
+    font-size: 16px;
+  }
+
+  .menuButton,
+  .overlay {
+    display: none;
+  }
+}

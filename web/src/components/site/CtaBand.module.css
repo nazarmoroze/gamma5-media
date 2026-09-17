@@ -1,0 +1,35 @@
+.band {
+  padding-block: 88px 64px;
+}
+
+.inner {
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.title {
+  max-width: 720px;
+  font-size: clamp(36px, 4.4vw, 64px);
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+@media (min-width: 900px) {
+  .band {
+    padding-block: 140px 100px;
+  }
+
+  .inner {
+    padding-top: 56px;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+  }
+}

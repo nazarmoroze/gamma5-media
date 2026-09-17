@@ -6,7 +6,7 @@ import { PauseIcon, PlayIcon } from "@/components/icons";
 import { hero } from "@/content/home";
 
 import styles from "./Hero.module.css";
-import { VideoDialog } from "./VideoDialog";
+import { VideoDialog } from "@/components/VideoDialog";
 
 const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
 
@@ -37,7 +37,7 @@ export function Hero() {
   }, [reelOpen, playing]);
 
   return (
-    <section id="top" className={styles.hero}>
+    <section className={styles.hero}>
       <video
         ref={videoRef}
         className={styles.media}
@@ -65,7 +65,7 @@ export function Hero() {
             Watch showreel
           </button>
           <a href="#contact" className="btn btn-red">
-            Start a project
+            {hero.cta}
           </a>
         </div>
       </div>

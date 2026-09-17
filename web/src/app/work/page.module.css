@@ -1,0 +1,24 @@
+.page {
+  padding-top: 112px;
+}
+
+.title {
+  font-size: clamp(48px, 6.4vw, 96px);
+  line-height: 0.98;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.intro {
+  max-width: 560px;
+  font-size: clamp(17px, 1.4vw, 20px);
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+@media (min-width: 900px) {
+  .page {
+    padding-top: 190px;
+  }
+}
