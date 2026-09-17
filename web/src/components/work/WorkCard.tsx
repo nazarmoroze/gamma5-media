@@ -13,10 +13,11 @@ import { caseHref, categoryLabel, type CaseSummary } from "./types";
 type WorkCardProps = {
   item: CaseSummary;
   delay: number;
+  priority?: boolean;
   onPlay: () => void;
 };
 
-export function WorkCard({ item, delay, onPlay }: WorkCardProps) {
+export function WorkCard({ item, delay, priority, onPlay }: WorkCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const startPreview = () => {
@@ -46,6 +47,7 @@ export function WorkCard({ item, delay, onPlay }: WorkCardProps) {
         image={item.cover}
         sizes="(min-width: 1024px) 384px, (min-width: 640px) 50vw, 100vw"
         className={styles.poster}
+        priority={priority}
       />
       {item.previewVideo && (
         <video

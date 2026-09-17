@@ -50,7 +50,8 @@
   font-weight: 600;
   letter-spacing: -0.045em;
   text-wrap: balance;
-  animation: rise 800ms var(--ease-out) 250ms both;
+  /* Largest element on the first screen: slide in without fading so it paints immediately. */
+  animation: settle 800ms var(--ease-out) both;
 }
 
 .subtitle {
@@ -101,6 +102,15 @@
 
 .pause:active {
   transform: scale(0.97);
+}
+
+@keyframes settle {
+  from {
+    transform: translate3d(0, 16px, 0);
+  }
+  to {
+    transform: none;
+  }
 }
 
 @keyframes zoom {

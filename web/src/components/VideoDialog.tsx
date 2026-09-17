@@ -45,7 +45,12 @@ export function VideoDialog({
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
+    if (open && !dialog.open) {
+      dialog.showModal();
+      // showModal() focuses the first button, which shows a focus ring on "Previous" for mouse users too.
+      // Focus the dialog itself instead; Tab still moves to the controls with a visible ring.
+      dialog.focus();
+    }
     if (!open && dialog.open) dialog.close();
   }, [open]);
 
@@ -64,6 +69,7 @@ export function VideoDialog({
       ref={ref}
       className={styles.dialog}
       aria-label={title}
+      tabIndex={-1}
       onClose={onClose}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
@@ -93,7 +99,6 @@ export function VideoDialog({
                 className={`${styles.round} ${styles.close}`}
                 onClick={onClose}
                 aria-label="Close"
-                autoFocus
               >
                 <CloseIcon />
               </button>

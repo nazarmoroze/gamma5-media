@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { PortableText, stegaClean, type PortableTextComponents } from "next-sanity";
 import { notFound } from "next/navigation";
 
+import { JsonLd } from "@/components/site/JsonLd";
 import { PageTransition } from "@/components/site/PageTransition";
 import { newTab } from "@/lib/site";
+import { breadcrumbList } from "@/lib/structured-data";
 import { sanityFetch } from "@/sanity/live";
 import { PRIVACY_QUERY } from "@/sanity/queries";
 
@@ -57,6 +59,15 @@ export default async function PrivacyPolicyPage() {
   return (
     <PageTransition>
       <main className={styles.page}>
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            ...breadcrumbList([
+              { name: "Home", path: "/" },
+              { name: stegaClean(data.title) || "Privacy Policy", path: "/privacy-policy" },
+            ]),
+          }}
+        />
         <article className={`container ${styles.inner}`}>
           <header className={styles.header}>
             <span className="eyebrow">Legal</span>

@@ -1,25 +1,30 @@
 import type { Metadata } from "next";
+import { stegaClean } from "next-sanity";
 
 import { CtaBand } from "@/components/site/CtaBand";
+import { JsonLd } from "@/components/site/JsonLd";
 import { PageTransition } from "@/components/site/PageTransition";
 import { WorkGrid } from "@/components/work/WorkGrid";
-import { contactLinks } from "@/lib/site";
+import { caseHref } from "@/components/work/types";
+import { contactLinks, siteUrl } from "@/lib/site";
+import { absoluteUrl, breadcrumbList, websiteId } from "@/lib/structured-data";
 import { sanityFetch } from "@/sanity/live";
 import { CASES_QUERY, SETTINGS_QUERY } from "@/sanity/queries";
 
 import styles from "./page.module.css";
 
+const description =
+  "Commercials, real estate films, YouTube production and short-form videos made by GAMMA5, a video production company in Cyprus.";
+
 export const metadata: Metadata = {
   title: "Video Production Portfolio",
-  description:
-    "Commercials, real estate films, YouTube production and short-form videos made by GAMMA5, a video production company in Cyprus.",
+  description,
   alternates: { canonical: "/work" },
   openGraph: {
     type: "website",
     url: "/work",
     title: "Video Production Portfolio | GAMMA5",
-    description:
-      "Commercials, real estate films, YouTube production and short-form videos made by GAMMA5, a video production company in Cyprus.",
+    description,
   },
 };
 
@@ -29,14 +34,44 @@ export default async function WorkPage() {
     sanityFetch({ query: SETTINGS_QUERY }),
   ]);
   const instagram = contactLinks(settings).find((link) => link.key === "instagram");
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${siteUrl}/work#page`,
+        url: absoluteUrl("/work"),
+        name: "Video Production Portfolio",
+        description,
+        isPartOf: { "@id": websiteId },
+        mainEntity: {
+          "@type": "ItemList",
+          itemListElement: cases
+            .filter((item) => item.slug)
+            .map((item, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              url: absoluteUrl(caseHref(item.slug)),
+              name: stegaClean(item.title) ?? undefined,
+            })),
+        },
+      },
+      breadcrumbList([
+        { name: "Home", path: "/" },
+        { name: "Work", path: "/work" },
+      ]),
+    ],
+  };
 
   return (
     <PageTransition>
       <main>
+        <JsonLd data={structuredData} />
         <section className={styles.page} aria-labelledby="work-title">
           <div className="container">
             <WorkGrid
               cases={cases}
+              priorityCount={3}
               extraTile={
                 instagram && {
                   href: instagram.href,

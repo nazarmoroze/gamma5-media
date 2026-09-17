@@ -32,9 +32,11 @@ type WorkGridProps = {
   extraTile?: Tile;
   /** Link under the grid. Hidden on desktop while the extra tile already points to the same place. */
   moreLink?: { href: string; label: string };
+  /** Load the first posters eagerly when the grid is on the first screen (the /work page). */
+  priorityCount?: number;
 };
 
-export function WorkGrid({ cases, heading, extraTile, moreLink }: WorkGridProps) {
+export function WorkGrid({ cases, heading, extraTile, moreLink, priorityCount = 0 }: WorkGridProps) {
   const [filter, setFilter] = useState<Filter>("all");
   const [activeId, setActiveId] = useState<string | null>(null);
   const [indicator, setIndicator] = useState({ x: 0, w: 0 });
@@ -107,6 +109,7 @@ export function WorkGrid({ cases, heading, extraTile, moreLink }: WorkGridProps)
             key={item._id}
             item={item}
             delay={i * 50}
+            priority={i < priorityCount}
             onPlay={() => setActiveId(item._id)}
           />
         ))}

@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 import {CogIcon} from '@sanity/icons/Cog'
 
 export const siteSettingsType = defineType({
@@ -41,6 +41,27 @@ export const siteSettingsType = defineType({
       group: 'company',
       description: 'Shown in the footer, e.g. Based in Cyprus, working worldwide.',
     }),
+    defineField({
+      name: 'foundingYear',
+      title: 'Year founded',
+      type: 'number',
+      group: 'company',
+      description: 'Used in structured data for search engines.',
+      validation: (rule) => rule.integer().min(1950).max(new Date().getFullYear()),
+    }),
+    defineField({
+      name: 'address',
+      title: 'Business address',
+      type: 'object',
+      group: 'company',
+      description: 'Not shown on the site; used in structured data for search engines. The country is always Cyprus.',
+      options: {collapsible: true, collapsed: false},
+      fields: [
+        defineField({name: 'city', type: 'string', description: 'e.g. Limassol'}),
+        defineField({name: 'street', title: 'Street address', type: 'string', description: 'Leave empty if there is no public office.'}),
+        defineField({name: 'postalCode', title: 'Postal code', type: 'string'}),
+      ],
+    }),
 
     defineField({
       name: 'email',
@@ -78,6 +99,16 @@ export const siteSettingsType = defineType({
       type: 'url',
       group: 'contacts',
       validation: (rule) => rule.uri({scheme: ['https']}),
+    }),
+    defineField({
+      name: 'profiles',
+      title: 'Other official profiles',
+      type: 'array',
+      group: 'contacts',
+      description:
+        'Links to the company on other platforms, e.g. YouTube, Vimeo, Facebook, Google Business Profile or Clutch. Not shown on the site; tells search engines and AI these profiles belong to GAMMA5.',
+      of: [defineArrayMember({type: 'url', validation: (rule) => rule.uri({scheme: ['https']})})],
+      validation: (rule) => rule.unique(),
     }),
   ],
   preview: {
