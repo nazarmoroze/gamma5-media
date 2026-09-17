@@ -75,6 +75,15 @@ export const HOME_QUERY = defineQuery(`
   }
 `);
 
+export const PRIVACY_QUERY = defineQuery(`
+  *[_id == "privacyPolicy" && _type == "privacyPolicy"][0] {
+    title,
+    lastUpdated,
+    description,
+    body
+  }
+`);
+
 export const CASES_QUERY = defineQuery(`
   *[_type == "case" && defined(slug.current)] | order(coalesce(order, 999) asc, year desc) {
     ${caseCardFields}

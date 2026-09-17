@@ -5,6 +5,7 @@ export const resolve: PresentationPluginOptions['resolve'] = {
   mainDocuments: defineDocuments([
     {route: '/', filter: `_type == "homePage" && _id == "homePage"`},
     {route: '/work/:slug', filter: `_type == "case" && slug.current == $slug`},
+    {route: '/privacy-policy', filter: `_type == "privacyPolicy" && _id == "privacyPolicy"`},
   ]),
   // Where a document is used on the site, shown on top of the document form.
   locations: {
@@ -12,6 +13,11 @@ export const resolve: PresentationPluginOptions['resolve'] = {
       message: 'This document is the home page',
       tone: 'positive',
       locations: [{title: 'Home', href: '/'}],
+    }),
+    privacyPolicy: defineLocations({
+      message: 'This document is the privacy policy page',
+      tone: 'positive',
+      locations: [{title: 'Privacy Policy', href: '/privacy-policy'}],
     }),
     siteSettings: defineLocations({
       message: 'Used in the header, footer and contact section on every page',
