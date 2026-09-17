@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { about } from "@/content/home";
+import { about, services } from "@/content/home";
 
 import styles from "./About.module.css";
 
@@ -8,13 +8,19 @@ export function About() {
   return (
     <section id="about" className={styles.about} aria-labelledby="about-title">
       <div className={`container ${styles.grid}`}>
-        <h2 id="about-title" className={`eyebrow ${styles.label}`}>
-          About us
-        </h2>
+        <span className={`eyebrow ${styles.label}`}>About us</span>
         <div className={styles.copy}>
-          <p className={styles.lead}>
-            <span className={styles.brand}>GAMMA5</span> {about.lead}
-          </p>
+          <h2 id="about-title" className={styles.heading}>
+            <span className={styles.brand}>GAMMA5</span> {about.heading}
+          </h2>
+          <p className={styles.lead}>{about.lead}</p>
+          <ul className={styles.services} aria-label="Services">
+            {services.map((service) => (
+              <li key={service} className={styles.service}>
+                {service}
+              </li>
+            ))}
+          </ul>
           <p className={styles.body}>{about.body}</p>
           <dl className={styles.stats}>
             {about.stats.map((stat) => (

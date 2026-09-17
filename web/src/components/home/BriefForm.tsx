@@ -51,7 +51,7 @@ export function BriefForm() {
   return (
     <form action={formAction} className={styles.form} noValidate>
       <div className={styles.formHead}>
-        <span className={styles.formTitle}>Tell us about your project</span>
+        <span className={styles.formTitle}>Request a quote</span>
         <span className={styles.formHint}>A few details are enough — we’ll take it from there.</span>
       </div>
 

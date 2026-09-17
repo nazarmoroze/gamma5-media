@@ -5,12 +5,22 @@ import { WorkGrid } from "@/components/work/WorkGrid";
 import { sanityFetch } from "@/sanity/fetch";
 import { CASES_QUERY } from "@/sanity/queries";
 
+import { openGraphDefaults } from "../shared-metadata";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "Work — GAMMA5",
+  title: "Video Production Portfolio",
   description:
-    "Commercials, YouTube production and short-form content made by GAMMA5 for brands, agencies and developers.",
+    "Commercials, real estate films, YouTube production and short-form videos made by GAMMA5, a video production company in Cyprus.",
+  alternates: { canonical: "/work" },
+  openGraph: {
+    ...openGraphDefaults,
+    type: "website",
+    url: "/work",
+    title: "Video Production Portfolio | GAMMA5",
+    description:
+      "Commercials, real estate films, YouTube production and short-form videos made by GAMMA5, a video production company in Cyprus.",
+  },
 };
 
 export default async function WorkPage() {

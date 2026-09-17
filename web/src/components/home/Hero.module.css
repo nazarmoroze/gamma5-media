@@ -37,21 +37,15 @@
   gap: 28px;
 }
 
-.copy {
+.row {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  max-width: 860px;
-}
-
-.eyebrow {
-  font-weight: 500;
-  color: rgba(245, 245, 244, 0.82);
-  animation: rise 800ms var(--ease-out) 150ms both;
+  gap: 28px;
 }
 
 .title {
-  font-size: clamp(54px, 7.2vw, 104px);
+  max-width: 1080px;
+  font-size: clamp(50px, 7.2vw, 104px);
   line-height: 0.96;
   font-weight: 600;
   letter-spacing: -0.045em;
@@ -60,7 +54,7 @@
 }
 
 .subtitle {
-  max-width: 640px;
+  max-width: 560px;
   font-size: clamp(18px, 1.6vw, 22px);
   line-height: 1.45;
   color: rgba(245, 245, 244, 0.84);
@@ -138,7 +132,11 @@
   }
 
   .content {
-    padding-block: 160px 88px;
+    padding-block: 160px 72px;
+    gap: 32px;
+  }
+
+  .row {
     flex-direction: row;
     align-items: flex-end;
     justify-content: space-between;

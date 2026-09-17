@@ -327,12 +327,21 @@ export type CASE_QUERY_RESULT = {
   } | null;
 } | null;
 
+// Source: ../web/src/sanity/queries.ts
+// Variable: SITEMAP_QUERY
+// Query: *[_type == "case" && defined(slug.current)] { "slug": slug.current, _updatedAt }
+export type SITEMAP_QUERY_RESULT = Array<{
+  slug: string | null;
+  _updatedAt: string;
+}>;
+
 // Query TypeMap
 declare global {
   interface SanityQueries {
     '\n  *[_type == "case" && defined(slug.current)] | order(coalesce(order, 999) asc, year desc) {\n    _id,\n    title,\n    "slug": slug.current,\n    client,\n    category,\n    year,\n    featured,\n    orientation,\n    cover { alt, hotspot, crop, asset->{ _id, url, metadata { lqip, dimensions { width, height } } } },\n    "fullVideo": coalesce(fullVideoFile.asset->url, fullVideoUrl),\n    "previewVideo": coalesce(previewVideoFile.asset->url, previewVideoUrl)\n  }\n': CASES_QUERY_RESULT;
     '\n  *[_type == "case" && defined(slug.current)].slug.current\n': CASE_SLUGS_QUERY_RESULT;
     '\n  *[_type == "case" && slug.current == $slug][0] {\n    _id,\n    title,\n    "slug": slug.current,\n    client,\n    category,\n    year,\n    scope,\n    summary,\n    orientation,\n    cover { alt, hotspot, crop, asset->{ _id, url, metadata { lqip, dimensions { width, height } } } },\n    "fullVideo": coalesce(fullVideoFile.asset->url, fullVideoUrl),\n    "previewVideo": coalesce(previewVideoFile.asset->url, previewVideoUrl),\n    gallery[] { _key, alt, caption, hotspot, crop, asset->{ _id, url, metadata { lqip, dimensions { width, height } } } },\n    brief,\n    idea,\n    result,\n    credits[] { _key, role, name },\n    testimonial { quote, author, role }\n  }\n': CASE_QUERY_RESULT;
+    '\n  *[_type == "case" && defined(slug.current)] { "slug": slug.current, _updatedAt }\n': SITEMAP_QUERY_RESULT;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too

@@ -1,5 +1,5 @@
 import { ArrowUpRightIcon } from "@/components/icons";
-import { contacts } from "@/content/home";
+import { contact, contacts } from "@/content/home";
 
 import { BriefForm } from "./BriefForm";
 import styles from "./Contact.module.css";
@@ -19,9 +19,9 @@ export function Contact() {
         <div className={styles.intro}>
           <span className="eyebrow">Contact us</span>
           <h2 id="contact-title" className="section-title">
-            Let’s create something together
+            {contact.title}
           </h2>
-          <p className={styles.lede}>Got questions, project ideas, or just want to say hi? We’re all ears.</p>
+          <p className={styles.lede}>{contact.lede}</p>
           <ul className={styles.cards}>
             {cards.map((card) => (
               <li key={card.label} className={card.wide ? styles.wideCard : undefined}>

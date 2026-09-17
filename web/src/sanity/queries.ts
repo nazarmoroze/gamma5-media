@@ -42,3 +42,7 @@ export const CASE_QUERY = defineQuery(`
     testimonial { quote, author, role }
   }
 `);
+
+export const SITEMAP_QUERY = defineQuery(`
+  *[_type == "case" && defined(slug.current)] { "slug": slug.current, _updatedAt }
+`);

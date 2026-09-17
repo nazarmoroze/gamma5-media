@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRightIcon } from "@/components/icons";
 import { WorkGrid } from "@/components/work/WorkGrid";
 import type { CaseSummary } from "@/components/work/types";
+import { portfolio } from "@/content/home";
 
 import styles from "./Portfolio.module.css";
 
@@ -17,8 +18,9 @@ export function Portfolio({ cases }: { cases: CaseSummary[] }) {
             <>
               <span className="eyebrow">Portfolio</span>
               <h2 id="portfolio-title" className="section-title">
-                Selected work
+                {portfolio.title}
               </h2>
+              <p className={styles.intro}>{portfolio.intro}</p>
             </>
           }
         />

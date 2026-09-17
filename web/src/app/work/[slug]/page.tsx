@@ -12,6 +12,7 @@ import { sanityFetch } from "@/sanity/fetch";
 import { urlFor } from "@/sanity/image";
 import { CASE_QUERY, CASE_SLUGS_QUERY, CASES_QUERY } from "@/sanity/queries";
 
+import { openGraphDefaults } from "../../shared-metadata";
 import styles from "./page.module.css";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -31,9 +32,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const image = item.cover?.asset?._id ? urlFor(item.cover.asset._id).width(1200).height(630).url() : undefined;
 
   return {
-    title: `${item.title} — ${item.client} | GAMMA5`,
+    title: `${item.title} — ${item.client}`,
     description,
-    openGraph: { title: `${item.title} — ${item.client}`, description, images: image ? [image] : undefined },
+    alternates: { canonical: caseHref(item.slug) },
+    openGraph: {
+      type: "article",
+      url: caseHref(item.slug),
+      title: `${item.title} — ${item.client} | GAMMA5`,
+      description,
+      siteName: openGraphDefaults.siteName,
+      locale: openGraphDefaults.locale,
+      images: image ? [image] : openGraphDefaults.images,
+    },
   };
 }
 
