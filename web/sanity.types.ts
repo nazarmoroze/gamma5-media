@@ -15,6 +15,21 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type QuoteRequest = {
+  _id: string;
+  _type: "quoteRequest";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  status?: "new" | "contacted" | "closed" | "spam";
+  name?: string;
+  method?: "email" | "whatsapp" | "telegram";
+  contact?: string;
+  receivedAt?: string;
+  emailSent?: boolean;
+  notes?: string;
+};
+
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -318,6 +333,7 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | QuoteRequest
   | SanityImageAssetReference
   | SanityFileAssetReference
   | Case
