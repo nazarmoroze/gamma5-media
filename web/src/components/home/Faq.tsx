@@ -4,6 +4,7 @@ import { ArrowRightIcon } from "@/components/icons";
 import type { HomeData } from "@/sanity/types";
 
 import styles from "./Faq.module.css";
+import { FaqList } from "./FaqList";
 
 type FaqProps = { faq: NonNullable<HomeData["faq"]> };
 
@@ -25,17 +26,7 @@ export function Faq({ faq }: FaqProps) {
           </Link>
         </div>
 
-        <div className={styles.list}>
-          {items.map((item) => (
-            <details key={item._key} name="faq" className={styles.item}>
-              <summary className={styles.question}>
-                <h3 className={styles.questionText}>{item.question}</h3>
-                <span className={styles.icon} aria-hidden="true" />
-              </summary>
-              <p className={styles.answer}>{item.answer}</p>
-            </details>
-          ))}
-        </div>
+        <FaqList items={items} />
       </div>
     </section>
   );
