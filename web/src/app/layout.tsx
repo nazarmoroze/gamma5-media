@@ -38,6 +38,15 @@ export async function generateMetadata(): Promise<Metadata> {
     title: { default: title, template: `%s | ${name}` },
     description,
     applicationName: name,
+    // SVG for current browsers, ICO for older ones and Google Search, PNG for iOS home screens.
+    // The ICO says 32x32 rather than "any" so Chrome still prefers the SVG.
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "32x32" },
+        { url: "/icon.svg", type: "image/svg+xml" },
+      ],
+      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    },
     openGraph: {
       type: "website",
       siteName: name,

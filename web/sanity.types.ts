@@ -135,6 +135,7 @@ export type SiteSettings = {
   _rev: string;
   name?: string;
   legalName?: string;
+  registeredName?: string;
   location?: string;
   email?: string;
   phone?: string;
@@ -354,10 +355,11 @@ export type AllSanitySchemaTypes =
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: SETTINGS_QUERY
-// Query: *[_id == "siteSettings" && _type == "siteSettings"][0] {    name,    legalName,    location,    email,    phone,    telegram,    instagram,    linkedin  }
+// Query: *[_id == "siteSettings" && _type == "siteSettings"][0] {    name,    legalName,    registeredName,    location,    email,    phone,    telegram,    instagram,    linkedin  }
 export type SETTINGS_QUERY_RESULT = {
   name: string | null;
   legalName: string | null;
+  registeredName: string | null;
   location: string | null;
   email: string | null;
   phone: string | null;
@@ -587,7 +589,7 @@ export type SITEMAP_QUERY_RESULT = Array<{
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '\n  *[_id == "siteSettings" && _type == "siteSettings"][0] {\n    name,\n    legalName,\n    location,\n    email,\n    phone,\n    telegram,\n    instagram,\n    linkedin\n  }\n': SETTINGS_QUERY_RESULT;
+    '\n  *[_id == "siteSettings" && _type == "siteSettings"][0] {\n    name,\n    legalName,\n    registeredName,\n    location,\n    email,\n    phone,\n    telegram,\n    instagram,\n    linkedin\n  }\n': SETTINGS_QUERY_RESULT;
     '\n  *[_id == "homePage" && _type == "homePage"][0] {\n    _id,\n    _type,\n    hero {\n      title,\n      subtitle,\n      ctaLabel,\n      "showreel": coalesce(showreelFile.asset->url, showreelUrl),\n      poster { \n  alt,\n  hotspot,\n  crop,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n }\n    },\n    about {\n      heading,\n      lead,\n      body,\n      stats[] { _key, value, label },\n      clients[] {\n        _key,\n        name,\n        logo { asset->{ _id, url, metadata { dimensions { width, height } } } }\n      }\n    },\n    portfolio {\n      title,\n      intro,\n      "cases": cases[]->{ \n  _id,\n  title,\n  "slug": slug.current,\n  client,\n  category,\n  year,\n  orientation,\n  cover { \n  alt,\n  hotspot,\n  crop,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n },\n  "fullVideo": coalesce(fullVideoFile.asset->url, fullVideoUrl),\n  "previewVideo": coalesce(previewVideoFile.asset->url, previewVideoUrl)\n }\n    },\n    faq {\n      title,\n      intro,\n      items[] { _key, question, answer }\n    },\n    contact { title, lede },\n    seo {\n      title,\n      description,\n      image { alt, asset->{ _id } }\n    }\n  }\n': HOME_QUERY_RESULT;
     '\n  *[_type == "case" && defined(slug.current)] | order(coalesce(order, 999) asc, year desc) {\n    \n  _id,\n  title,\n  "slug": slug.current,\n  client,\n  category,\n  year,\n  orientation,\n  cover { \n  alt,\n  hotspot,\n  crop,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n },\n  "fullVideo": coalesce(fullVideoFile.asset->url, fullVideoUrl),\n  "previewVideo": coalesce(previewVideoFile.asset->url, previewVideoUrl)\n\n  }\n': CASES_QUERY_RESULT;
     '\n  *[_type == "case" && defined(slug.current)].slug.current\n': CASE_SLUGS_QUERY_RESULT;

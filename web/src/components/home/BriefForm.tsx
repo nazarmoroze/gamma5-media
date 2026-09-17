@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useState, type CSSProperties } from "react";
 
 import { sendBrief, type BriefState, type ReplyMethod } from "@/app/actions";
 import { CheckIcon } from "@/components/icons";
@@ -13,6 +13,8 @@ const methods: Record<ReplyMethod, { label: string; field: string; type: string;
   whatsapp: { label: "WhatsApp", field: "WhatsApp number", type: "tel", autoComplete: "tel", placeholder: "+357 00 000000" },
   telegram: { label: "Telegram", field: "Telegram username", type: "text", autoComplete: "off", placeholder: "@username" },
 };
+
+const methodIds = Object.keys(methods) as ReplyMethod[];
 
 const initialState: BriefState = { status: "idle" };
 
@@ -76,8 +78,8 @@ export function BriefForm() {
       <fieldset className={styles.fieldset}>
         <legend className={styles.label}>Where should we reply?</legend>
         <input type="hidden" name="method" value={method} />
-        <div className={styles.segmented}>
-          {(Object.keys(methods) as ReplyMethod[]).map((id) => (
+        <div className={styles.segmented} style={{ "--active": methodIds.indexOf(method) } as CSSProperties}>
+          {methodIds.map((id) => (
             <button
               key={id}
               type="button"
@@ -88,6 +90,14 @@ export function BriefForm() {
               {methods[id].label}
             </button>
           ))}
+          {/* The same labels in the selected colours, clipped to the active option, so the pill and the text colour slide together. */}
+          <div className={styles.segmentedActive} aria-hidden="true">
+            {methodIds.map((id) => (
+              <span key={id} className={styles.segmentLabel}>
+                {methods[id].label}
+              </span>
+            ))}
+          </div>
         </div>
       </fieldset>
 

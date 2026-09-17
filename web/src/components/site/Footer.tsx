@@ -13,7 +13,7 @@ export function Footer({ settings }: { settings: Settings | null }) {
       <div className={`container ${styles.inner}`}>
         <Logo className={styles.logo} title={name} />
         <p className={styles.copy}>
-          © {new Date().getFullYear()} {name}. {settings?.location}
+          © {new Date().getFullYear()} {settings?.registeredName || name}. {settings?.location}
         </p>
         <nav aria-label="Footer" className={styles.links}>
           {socials.map((link) => (

@@ -20,11 +20,20 @@ export const siteSettingsType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      // Holds the full brand name despite the field name; the registered entity is in registeredName.
       name: 'legalName',
-      title: 'Full company name',
+      title: 'Full brand name',
       type: 'string',
       group: 'company',
-      description: 'Used as the LinkedIn label and in structured data, e.g. GAMMA5 Media.',
+      description: 'Used as the LinkedIn label and as the alternate name in structured data, e.g. GAMMA5 Media.',
+    }),
+    defineField({
+      name: 'registeredName',
+      title: 'Legal entity name',
+      type: 'string',
+      group: 'company',
+      description:
+        'Registered company name, shown in the footer copyright and used in structured data, e.g. Clubia Club Individual Adventures LTD.',
     }),
     defineField({
       name: 'location',

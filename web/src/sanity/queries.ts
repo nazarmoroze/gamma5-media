@@ -24,6 +24,7 @@ export const SETTINGS_QUERY = defineQuery(`
   *[_id == "siteSettings" && _type == "siteSettings"][0] {
     name,
     legalName,
+    registeredName,
     location,
     email,
     phone,
