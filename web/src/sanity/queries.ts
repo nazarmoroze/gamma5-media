@@ -30,7 +30,10 @@ export const SETTINGS_QUERY = defineQuery(`
     phone,
     telegram,
     instagram,
-    linkedin
+    linkedin,
+    foundingYear,
+    address { city, street, postalCode },
+    profiles
   }
 `);
 
@@ -97,6 +100,8 @@ export const CASE_SLUGS_QUERY = defineQuery(`
 export const CASE_QUERY = defineQuery(`
   *[_type == "case" && slug.current == $slug][0] {
     ${caseCardFields},
+    _createdAt,
+    releaseDate,
     scope,
     summary,
     gallery[] { _key, caption, ${imageFields} },

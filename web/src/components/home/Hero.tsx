@@ -4,6 +4,7 @@ import { stegaClean } from "next-sanity";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 import { PauseIcon, PlayIcon } from "@/components/icons";
+import { useAfterLoad } from "@/lib/use-after-load";
 import { urlFor } from "@/sanity/image";
 import type { HomeData } from "@/sanity/types";
 
@@ -33,27 +34,29 @@ export function Hero({ hero }: HeroProps) {
   // null = follow the reduced-motion preference until the visitor toggles playback.
   const [override, setOverride] = useState<boolean | null>(null);
   const [reelOpen, setReelOpen] = useState(false);
+  // The background video starts downloading only after the page has loaded, so it never competes with the first paint.
+  const videoReady = useAfterLoad();
   const playing = override ?? !reducedMotion;
 
   // The background loop also pauses while the full showreel is open.
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !videoReady) return;
     if (reelOpen || !playing) video.pause();
     else video.play().catch(() => setOverride(false));
-  }, [reelOpen, playing]);
+  }, [reelOpen, playing, videoReady]);
 
   return (
     <section className={styles.hero}>
       <video
         ref={videoRef}
         className={styles.media}
-        src={showreel}
+        src={videoReady ? showreel : undefined}
         poster={poster}
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="none"
         aria-hidden="true"
       />
       <div className={styles.shade} />

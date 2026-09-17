@@ -13,6 +13,11 @@
   justify-content: center;
 }
 
+/* The dialog takes focus when it opens; the ring belongs on the controls, not the full-screen overlay. */
+.dialog:focus {
+  outline: none;
+}
+
 .dialog[open] {
   display: flex;
   overflow-y: auto;

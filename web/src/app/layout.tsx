@@ -1,11 +1,10 @@
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
-import { VisualEditing } from "next-sanity/visual-editing";
 import { Instrument_Sans } from "next/font/google";
 import { draftMode } from "next/headers";
 
-import { DisableDraftMode } from "@/components/site/DisableDraftMode";
+import { DraftModeTools } from "@/components/site/DraftModeTools";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
 import { siteUrl } from "@/lib/site";
@@ -76,12 +75,7 @@ export default async function RootLayout({
         {children}
         <Footer settings={settings} />
         <SanityLive />
-        {isDraftMode && (
-          <>
-            <DisableDraftMode />
-            <VisualEditing />
-          </>
-        )}
+        {isDraftMode && <DraftModeTools />}
         <Analytics />
         <SpeedInsights />
       </body>

@@ -10,6 +10,7 @@ import { TrustedBy } from "@/components/home/TrustedBy";
 import { JsonLd } from "@/components/site/JsonLd";
 import { PageTransition } from "@/components/site/PageTransition";
 import { siteUrl } from "@/lib/site";
+import { organizationId, websiteId } from "@/lib/structured-data";
 import { sanityFetch } from "@/sanity/live";
 import { HOME_QUERY, SETTINGS_QUERY } from "@/sanity/queries";
 import type { HomeData, Settings } from "@/sanity/types";
@@ -25,7 +26,10 @@ function structuredData(home: HomeData | null, settings: Settings | null) {
   const sameAs = [
     s?.instagram ? `https://www.instagram.com/${s.instagram}/` : null,
     s?.linkedin ?? null,
+    ...(s?.profiles ?? []),
   ].filter(Boolean);
+  const telephone = s?.phone ? s.phone.replace(/[^\d+]/g, "") : undefined;
+  const address = s?.address;
   const faqItems = h?.faq?.items?.filter((item) => item.question && item.answer) ?? [];
 
   return {
@@ -33,15 +37,27 @@ function structuredData(home: HomeData | null, settings: Settings | null) {
     "@graph": [
       {
         "@type": "Organization",
-        "@id": `${siteUrl}/#organization`,
+        "@id": organizationId,
         name,
         alternateName: s?.legalName ?? undefined,
         legalName: s?.registeredName ?? undefined,
         url: siteUrl,
-        logo: `${siteUrl}/logo.svg`,
+        logo: { "@type": "ImageObject", url: `${siteUrl}/icon-512.png`, width: 512, height: 512 },
         description: h?.seo?.description ?? undefined,
         email: s?.email ?? undefined,
-        telephone: s?.phone ? s.phone.replace(/[^\d+]/g, "") : undefined,
+        telephone,
+        foundingDate: s?.foundingYear ? String(s.foundingYear) : undefined,
+        address: {
+          "@type": "PostalAddress",
+          addressCountry: "CY",
+          addressLocality: address?.city ?? undefined,
+          streetAddress: address?.street ?? undefined,
+          postalCode: address?.postalCode ?? undefined,
+        },
+        contactPoint:
+          s?.email || telephone
+            ? [{ "@type": "ContactPoint", contactType: "sales", email: s?.email ?? undefined, telephone }]
+            : undefined,
         areaServed: [{ "@type": "Country", name: "Cyprus" }],
         sameAs: sameAs.length ? sameAs : undefined,
       },
@@ -60,11 +76,11 @@ function structuredData(home: HomeData | null, settings: Settings | null) {
         : []),
       {
         "@type": "WebSite",
-        "@id": `${siteUrl}/#website`,
+        "@id": websiteId,
         url: siteUrl,
         name,
         inLanguage: "en",
-        publisher: { "@id": `${siteUrl}/#organization` },
+        publisher: { "@id": organizationId },
       },
     ],
   };

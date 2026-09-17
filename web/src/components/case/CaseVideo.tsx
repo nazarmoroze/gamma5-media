@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { SanityImage } from "@/components/SanityImage";
 import { PlayIcon } from "@/components/icons";
+import { useAfterLoad } from "@/lib/use-after-load";
 
 import type { CaseDetail } from "../work/types";
 import styles from "./CaseVideo.module.css";
@@ -19,6 +20,8 @@ type CaseVideoProps = {
 
 export function CaseVideo({ title, cover, fullVideo, previewVideo, vertical }: CaseVideoProps) {
   const [playing, setPlaying] = useState(false);
+  // The looping preview waits until the page has loaded so the cover image paints first.
+  const previewReady = useAfterLoad();
   const frameClass = `${styles.frame} ${vertical ? styles.vertical : ""}`;
 
   if (fullVideo) {
@@ -44,7 +47,7 @@ export function CaseVideo({ title, cover, fullVideo, previewVideo, vertical }: C
   return (
     <div className={frameClass}>
       <SanityImage image={cover} sizes="(min-width: 1280px) 1200px, 100vw" preload />
-      {previewVideo && (
+      {previewVideo && previewReady && (
         <video className={styles.video} src={stegaClean(previewVideo)} autoPlay muted loop playsInline aria-hidden="true" />
       )}
       <span className={styles.note}>{previewVideo ? "Preview · full film coming soon" : "Film coming soon"}</span>

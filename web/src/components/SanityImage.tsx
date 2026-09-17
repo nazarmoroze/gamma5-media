@@ -14,10 +14,12 @@ type SanityImageProps = {
   className?: string;
   alt?: string;
   preload?: boolean;
+  // For images that are likely the largest element on the first screen.
+  priority?: boolean;
 };
 
 // Fills its positioned parent and crops around the editor's hotspot.
-export function SanityImage({ image, sizes, className, alt, preload }: SanityImageProps) {
+export function SanityImage({ image, sizes, className, alt, preload, priority }: SanityImageProps) {
   if (!image?.asset?._id) return null;
   const lqip = image.asset.metadata?.lqip ?? undefined;
 
@@ -28,6 +30,8 @@ export function SanityImage({ image, sizes, className, alt, preload }: SanityIma
       fill
       sizes={sizes}
       preload={preload}
+      loading={priority ? "eager" : undefined}
+      fetchPriority={priority ? "high" : undefined}
       className={className}
       style={{ objectFit: "cover", objectPosition: hotspotPosition(image) }}
       placeholder={lqip ? "blur" : "empty"}

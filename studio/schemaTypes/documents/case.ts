@@ -57,6 +57,14 @@ export const caseType = defineType({
       validation: (rule) => rule.integer().min(2000).max(2100),
     }),
     defineField({
+      name: 'releaseDate',
+      title: 'Release date',
+      type: 'date',
+      group: 'overview',
+      description:
+        'When the film was first published. Search engines use it for the video. If empty, the date the case was added to the site is used.',
+    }),
+    defineField({
       name: 'scope',
       title: 'What we did',
       type: 'array',

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { stegaClean } from "next-sanity";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -6,16 +7,42 @@ import { SanityImage } from "@/components/SanityImage";
 import { CaseVideo } from "@/components/case/CaseVideo";
 import { ArrowRightIcon, ChevronLeftIcon } from "@/components/icons";
 import { CtaBand } from "@/components/site/CtaBand";
+import { JsonLd } from "@/components/site/JsonLd";
 import { PageTransition } from "@/components/site/PageTransition";
-import { caseHref, categoryLabel, isVertical } from "@/components/work/types";
+import { caseCategory, caseHref, categoryLabel, isVertical, type CaseCategory } from "@/components/work/types";
+import { siteUrl } from "@/lib/site";
+import { absoluteUrl, breadcrumbList, organizationId } from "@/lib/structured-data";
 import { client } from "@/sanity/client";
 import { urlFor } from "@/sanity/image";
 import { sanityFetch } from "@/sanity/live";
-import { CASE_QUERY, CASE_SLUGS_QUERY, CASES_QUERY } from "@/sanity/queries";
+import { CASE_QUERY, CASE_SLUGS_QUERY, CASES_QUERY, SETTINGS_QUERY } from "@/sanity/queries";
 
 import styles from "./page.module.css";
 
 type Props = { params: Promise<{ slug: string }> };
+
+// How each category reads in titles and descriptions.
+const videoKind: Record<CaseCategory, string> = {
+  commercial: "commercial video",
+  youtube: "YouTube video",
+  short: "short-form video",
+};
+
+const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+const titleCase = (text: string) => text.replace(/(^|[\s-])([a-z])/g, (_, before, letter) => before + letter.toUpperCase());
+
+// Search title and description built from the case fields; an editor-written summary wins for the description.
+function caseSeo(item: { title: string | null; client: string | null; category: string | null; summary: string | null }) {
+  const category = caseCategory(item.category);
+  const kind = (category && videoKind[category]) || "video";
+  const forClient = item.client ? ` for ${item.client}` : "";
+  return {
+    title: `${item.title}: ${titleCase(kind)}${forClient}`,
+    description:
+      item.summary ??
+      `${capitalize(kind)}${forClient}, produced by GAMMA5, a full-cycle video production company in Cyprus. Watch the project and discuss your own video.`,
+  };
+}
 
 export async function generateStaticParams() {
   const slugs = await client.withConfig({ useCdn: false }).fetch(CASE_SLUGS_QUERY, {}, { perspective: "published" });
@@ -27,32 +54,69 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { data: item } = await sanityFetch({ query: CASE_QUERY, params: { slug }, stega: false });
   if (!item) return {};
 
-  const description =
-    item.summary ?? `${categoryLabel(item.category)} video for ${item.client} by GAMMA5, full-cycle video production.`;
+  const { title, description } = caseSeo(item);
   const image = item.cover?.asset?._id ? urlFor(item.cover.asset._id).width(1200).height(630).url() : undefined;
 
   return {
-    title: `${item.title} — ${item.client}`,
+    title,
     description,
     alternates: { canonical: caseHref(item.slug) },
     openGraph: {
       type: "article",
       url: caseHref(item.slug),
-      title: `${item.title} — ${item.client} | GAMMA5`,
+      title: `${title} | GAMMA5`,
       description,
       locale: "en_US",
       images: image ? [image] : undefined,
     },
+    twitter: { card: "summary_large_image", title: `${title} | GAMMA5`, description, images: image ? [image] : undefined },
   };
 }
 
 export default async function CasePage({ params }: Props) {
   const { slug } = await params;
-  const [{ data: item }, { data: cases }] = await Promise.all([
+  const [{ data: item }, { data: cases }, { data: settings }] = await Promise.all([
     sanityFetch({ query: CASE_QUERY, params: { slug } }),
     sanityFetch({ query: CASES_QUERY }),
+    sanityFetch({ query: SETTINGS_QUERY, stega: false }),
   ]);
   if (!item) notFound();
+
+  const clean = stegaClean(item);
+  const url = absoluteUrl(caseHref(clean.slug));
+  const videoUrl = clean.fullVideo ?? clean.previewVideo;
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      // The film is the main content of a case page, which makes it eligible for video results.
+      ...(videoUrl && clean.cover?.asset?._id
+        ? [
+            {
+              "@type": "VideoObject",
+              "@id": `${url}#video`,
+              name: clean.client ? `${clean.title} — ${clean.client}` : clean.title,
+              description: caseSeo(clean).description,
+              thumbnailUrl: [urlFor(clean.cover.asset._id).width(1280).height(720).url()],
+              uploadDate: clean.releaseDate ?? clean._createdAt,
+              contentUrl: videoUrl,
+              url,
+              publisher: {
+                "@type": "Organization",
+                "@id": organizationId,
+                name: settings?.name || "GAMMA5",
+                url: siteUrl,
+                logo: { "@type": "ImageObject", url: `${siteUrl}/icon-512.png`, width: 512, height: 512 },
+              },
+            },
+          ]
+        : []),
+      breadcrumbList([
+        { name: "Home", path: "/" },
+        { name: "Work", path: "/work" },
+        { name: clean.title ?? "Case", path: caseHref(clean.slug) },
+      ]),
+    ],
+  };
 
   const index = cases.findIndex((c) => c._id === item._id);
   const next = cases.length > 1 && index >= 0 ? cases[(index + 1) % cases.length] : null;
@@ -77,6 +141,7 @@ export default async function CasePage({ params }: Props) {
   return (
     <PageTransition>
       <main className={styles.page}>
+        <JsonLd data={structuredData} />
         <div className="container">
           <Link href="/work" className={styles.back}>
             <ChevronLeftIcon size={16} />
