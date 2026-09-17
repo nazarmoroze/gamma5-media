@@ -1,5 +1,5 @@
 import { Logo } from "@/components/Logo";
-import { contactLinks } from "@/lib/site";
+import { contactLinks, newTab } from "@/lib/site";
 import type { Settings } from "@/sanity/types";
 
 import styles from "./Footer.module.css";
@@ -17,7 +17,7 @@ export function Footer({ settings }: { settings: Settings | null }) {
         </p>
         <nav aria-label="Footer" className={styles.links}>
           {socials.map((link) => (
-            <a key={link.key} href={link.href} className={styles.link}>
+            <a key={link.key} href={link.href} className={styles.link} {...newTab}>
               {link.label}
             </a>
           ))}
