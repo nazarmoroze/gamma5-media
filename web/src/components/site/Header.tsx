@@ -5,7 +5,7 @@ import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 
 import { Logo } from "@/components/Logo";
 import { ArrowUpRightIcon } from "@/components/icons";
-import { contactLinks } from "@/lib/site";
+import { contactLinks, newTab } from "@/lib/site";
 import type { Settings } from "@/sanity/types";
 
 import styles from "./Header.module.css";
@@ -124,14 +124,14 @@ export function Header({ settings }: { settings: Settings | null }) {
           {email && (
             <div className={styles.reveal} style={stagger(links.length)}>
               <span className={styles.footLabel}>Get in touch</span>
-              <a href={email.href} className={styles.footEmail} onClick={close}>
+              <a href={email.href} className={styles.footEmail} onClick={close} {...newTab}>
                 {email.value}
               </a>
             </div>
           )}
           <div className={`${styles.reveal} ${styles.socials}`} style={stagger(links.length + 1)}>
             {socials.map((link) => (
-              <a key={link.key} href={link.href} className={styles.social}>
+              <a key={link.key} href={link.href} className={styles.social} {...newTab}>
                 {link.label}
               </a>
             ))}

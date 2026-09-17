@@ -1,5 +1,5 @@
 import { ArrowUpRightIcon } from "@/components/icons";
-import { contactLinks } from "@/lib/site";
+import { contactLinks, newTab } from "@/lib/site";
 import type { HomeData, Settings } from "@/sanity/types";
 
 import { BriefForm } from "./BriefForm";
@@ -23,7 +23,7 @@ export function Contact({ contact, settings }: ContactProps) {
             <ul className={styles.cards}>
               {cards.map((card) => (
                 <li key={card.key} className={card.key === "email" ? styles.wideCard : undefined}>
-                  <a href={card.href} className={styles.card}>
+                  <a href={card.href} className={styles.card} {...newTab}>
                     <span className={styles.cardText}>
                       <span className={styles.cardLabel}>{card.label}</span>
                       <span className={styles.cardValue}>{card.value}</span>

@@ -6,6 +6,9 @@ export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://gamma5media
 
 export type ContactLink = { key: string; label: string; value: string; href: string };
 
+// Contact and social links open in a new tab so visitors keep the site open.
+export const newTab = { target: "_blank", rel: "noopener noreferrer" } as const;
+
 // Visible values keep Sanity's click-to-edit markers; hrefs are built from cleaned values.
 export function contactLinks(settings: Settings | null) {
   if (!settings) return [];
