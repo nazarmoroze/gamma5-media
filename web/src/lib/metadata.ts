@@ -59,7 +59,8 @@ export function pageMetadata({ title, description, path, image, type = "website"
   const text = description ?? undefined;
 
   return {
-    title,
+    // The layout's "%s | GAMMA5" template only applies to child segments, so the home page (same segment) needs the full title.
+    title: path === "/" ? { absolute: fullTitle } : title,
     description: text,
     alternates: { canonical: path },
     openGraph: {

@@ -83,6 +83,8 @@ export function WorkGrid({ cases, heading, extraTile, moreLink, priorityCount = 
             />
             {filters.map((f) => {
               const count = f.id === "all" ? cases.length : cases.filter((item) => caseCategory(item.category) === f.id).length;
+              // An empty category ("YouTube 0") only tells visitors there is nothing to see.
+              if (count === 0 && f.id !== "all") return null;
               return (
                 <button
                   key={f.id}

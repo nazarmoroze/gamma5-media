@@ -233,10 +233,11 @@
   animation: rise 520ms var(--ease-out) both;
 }
 
+/* Pure white: on the brand red it is 4.67:1, the off-white text colour would fall below 4.5:1. */
 .ctaKicker {
   font-size: 16px;
   font-weight: 500;
-  opacity: 0.85;
+  color: #fff;
 }
 
 .ctaBody {

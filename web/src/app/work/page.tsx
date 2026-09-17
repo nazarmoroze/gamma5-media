@@ -14,8 +14,9 @@ import { CASES_QUERY, SETTINGS_QUERY, WORK_PAGE_QUERY } from "@/sanity/queries";
 
 import styles from "./page.module.css";
 
-// Used until the Work page document in Sanity has its own SEO fields.
+// Used until the Work page document in Sanity has its own fields.
 const FALLBACK_TITLE = "Video Production Portfolio";
+const FALLBACK_INTRO = "Commercials, YouTube production and short-form content for brands, agencies and developers.";
 const FALLBACK_DESCRIPTION =
   "Commercials, real estate films, YouTube production and short-form videos made by GAMMA5, a video production company in Cyprus.";
 
@@ -33,8 +34,9 @@ export default async function WorkPage() {
   const [{ data: cases }, { data: settings }, { data: page }] = await Promise.all([
     sanityFetch({ query: CASES_QUERY }),
     sanityFetch({ query: SETTINGS_QUERY }),
-    sanityFetch({ query: WORK_PAGE_QUERY, stega: false }),
+    sanityFetch({ query: WORK_PAGE_QUERY }),
   ]);
+  const seo = stegaClean(page?.seo);
   const instagram = contactLinks(settings).find((link) => link.key === "instagram");
   const structuredData = {
     "@context": "https://schema.org",
@@ -43,8 +45,8 @@ export default async function WorkPage() {
         "@type": "CollectionPage",
         "@id": `${siteUrl}/work#page`,
         url: absoluteUrl("/work"),
-        name: page?.seo?.title || FALLBACK_TITLE,
-        description: page?.seo?.description || FALLBACK_DESCRIPTION,
+        name: seo?.title || FALLBACK_TITLE,
+        description: seo?.description || FALLBACK_DESCRIPTION,
         isPartOf: { "@id": websiteId },
         mainEntity: {
           "@type": "ItemList",
@@ -87,11 +89,9 @@ export default async function WorkPage() {
                 <>
                   <span className="eyebrow">Work</span>
                   <h1 id="work-title" className={styles.title}>
-                    Projects we’ve made
+                    {page?.heading || FALLBACK_TITLE}
                   </h1>
-                  <p className={styles.intro}>
-                    Commercials, YouTube production and short-form content for brands, agencies and developers.
-                  </p>
+                  <p className={styles.intro}>{page?.intro || FALLBACK_INTRO}</p>
                 </>
               }
             />

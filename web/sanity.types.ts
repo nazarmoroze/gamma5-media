@@ -201,6 +201,8 @@ export type WorkPage = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  heading?: string;
+  intro?: string;
   seo?: {
     title?: string;
     description?: string;
@@ -596,8 +598,10 @@ export type PRIVACY_QUERY_RESULT = {
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: WORK_PAGE_QUERY
-// Query: *[_id == "workPage" && _type == "workPage"][0] {    seo {      title,      description,      image { alt, hotspot, crop, asset->{ _id } }    }  }
+// Query: *[_id == "workPage" && _type == "workPage"][0] {    heading,    intro,    seo {      title,      description,      image { alt, hotspot, crop, asset->{ _id } }    }  }
 export type WORK_PAGE_QUERY_RESULT = {
+  heading: string | null;
+  intro: string | null;
   seo: {
     title: string | null;
     description: string | null;
@@ -736,7 +740,7 @@ declare global {
     '\n  *[_id == "siteSettings" && _type == "siteSettings"][0] {\n    name,\n    legalName,\n    registeredName,\n    location,\n    email,\n    phone,\n    telegram,\n    instagram,\n    linkedin,\n    foundingYear,\n    address { city, street, postalCode },\n    profiles\n  }\n': SETTINGS_QUERY_RESULT;
     '\n  *[_id == "homePage" && _type == "homePage"][0] {\n    _id,\n    _type,\n    hero {\n      title,\n      subtitle,\n      ctaLabel,\n      "showreel": showreelFile.asset->url,\n      poster { \n  alt,\n  hotspot,\n  crop,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n }\n    },\n    about {\n      heading,\n      lead,\n      body,\n      stats[] { _key, value, label },\n      clients[] {\n        _key,\n        name,\n        logo { asset->{ _id, url, metadata { dimensions { width, height } } } }\n      }\n    },\n    portfolio {\n      title,\n      intro,\n      "cases": cases[]->{ \n  _id,\n  title,\n  "slug": slug.current,\n  client,\n  category,\n  year,\n  orientation,\n  cover { \n  alt,\n  hotspot,\n  crop,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n },\n  "fullVideo": fullVideoFile.asset->url,\n  "previewVideo": previewVideoFile.asset->url\n }\n    },\n    faq {\n      title,\n      intro,\n      items[] { _key, question, answer }\n    },\n    contact { title, lede },\n    seo {\n      title,\n      description,\n      image { alt, hotspot, crop, asset->{ _id } }\n    }\n  }\n': HOME_QUERY_RESULT;
     '\n  *[_id == "privacyPolicy" && _type == "privacyPolicy"][0] {\n    title,\n    lastUpdated,\n    description,\n    shareImage { alt, hotspot, crop, asset->{ _id } },\n    body\n  }\n': PRIVACY_QUERY_RESULT;
-    '\n  *[_id == "workPage" && _type == "workPage"][0] {\n    seo {\n      title,\n      description,\n      image { alt, hotspot, crop, asset->{ _id } }\n    }\n  }\n': WORK_PAGE_QUERY_RESULT;
+    '\n  *[_id == "workPage" && _type == "workPage"][0] {\n    heading,\n    intro,\n    seo {\n      title,\n      description,\n      image { alt, hotspot, crop, asset->{ _id } }\n    }\n  }\n': WORK_PAGE_QUERY_RESULT;
     '\n  *[_type == "case" && defined(slug.current)] | order(coalesce(order, 999) asc, year desc) {\n    \n  _id,\n  title,\n  "slug": slug.current,\n  client,\n  category,\n  year,\n  orientation,\n  cover { \n  alt,\n  hotspot,\n  crop,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n },\n  "fullVideo": fullVideoFile.asset->url,\n  "previewVideo": previewVideoFile.asset->url\n\n  }\n': CASES_QUERY_RESULT;
     '\n  *[_type == "case" && defined(slug.current)].slug.current\n': CASE_SLUGS_QUERY_RESULT;
     '\n  *[_type == "case" && slug.current == $slug][0] {\n    \n  _id,\n  title,\n  "slug": slug.current,\n  client,\n  category,\n  year,\n  orientation,\n  cover { \n  alt,\n  hotspot,\n  crop,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n },\n  "fullVideo": fullVideoFile.asset->url,\n  "previewVideo": previewVideoFile.asset->url\n,\n    _createdAt,\n    releaseDate,\n    shareImage { alt, hotspot, crop, asset->{ _id } },\n    scope,\n    summary,\n    gallery[] { _key, caption, \n  alt,\n  hotspot,\n  crop,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n },\n    brief,\n    idea,\n    result,\n    credits[] { _key, role, name },\n    testimonial { quote, author, role }\n  }\n': CASE_QUERY_RESULT;

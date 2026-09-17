@@ -90,6 +90,8 @@ export const PRIVACY_QUERY = defineQuery(`
 
 export const WORK_PAGE_QUERY = defineQuery(`
   *[_id == "workPage" && _type == "workPage"][0] {
+    heading,
+    intro,
     seo {
       title,
       description,
