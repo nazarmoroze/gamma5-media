@@ -5,7 +5,7 @@ import {visionTool} from '@sanity/vision'
 
 import {resolve} from './presentation/resolve'
 import {schemaTypes} from './schemaTypes'
-import {SINGLETONS, structure} from './structure'
+import {FORM_SUBMISSIONS, SINGLETONS, structure} from './structure'
 
 // Only these actions make sense for a document that must always exist.
 const SINGLETON_ACTIONS = new Set(['publish', 'discardChanges', 'restore'])
@@ -36,13 +36,19 @@ export default defineConfig({
 
   schema: {
     types: schemaTypes,
-    templates: (templates) => templates.filter(({schemaType}) => !SINGLETONS.includes(schemaType)),
+    templates: (templates) =>
+      templates.filter(({schemaType}) => !SINGLETONS.includes(schemaType) && !FORM_SUBMISSIONS.includes(schemaType)),
   },
 
   document: {
-    actions: (actions, {schemaType}) =>
-      SINGLETONS.includes(schemaType)
-        ? actions.filter(({action}) => action && SINGLETON_ACTIONS.has(action))
-        : actions,
+    actions: (actions, {schemaType}) => {
+      if (SINGLETONS.includes(schemaType)) {
+        return actions.filter(({action}) => action && SINGLETON_ACTIONS.has(action))
+      }
+      if (FORM_SUBMISSIONS.includes(schemaType)) {
+        return actions.filter(({action}) => action !== 'duplicate')
+      }
+      return actions
+    },
   },
 })

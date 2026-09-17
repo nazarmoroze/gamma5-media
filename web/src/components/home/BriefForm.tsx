@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 
 import { sendBrief, type BriefState, type ReplyMethod } from "@/app/actions";
 import { CheckIcon } from "@/components/icons";
+import { HONEYPOT_FIELD } from "@/lib/brief-email";
 
 import styles from "./Contact.module.css";
 
@@ -46,6 +47,11 @@ export function BriefForm() {
         <span className={styles.formTitle}>Request a quote</span>
         <span className={styles.formHint}>A few details are enough — we’ll take it from there.</span>
       </div>
+
+      <label className={styles.honeypot} aria-hidden="true">
+        Leave this field empty
+        <input type="text" name={HONEYPOT_FIELD} tabIndex={-1} autoComplete="off" defaultValue="" />
+      </label>
 
       <label className={styles.field}>
         <span className={styles.label}>Your name</span>
@@ -105,6 +111,12 @@ export function BriefForm() {
           </span>
         )}
       </label>
+
+      {errors.form && (
+        <p className={styles.formError} role="alert">
+          {errors.form}
+        </p>
+      )}
 
       <button type="submit" className={`btn btn-red ${styles.submit}`} disabled={pending}>
         {pending ? "Sending…" : "Send request"}

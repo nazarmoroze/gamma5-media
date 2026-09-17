@@ -171,6 +171,22 @@
   color: #ff7a75;
 }
 
+.formError {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: #ff7a75;
+}
+
+/* Off-screen trap for bots; not display:none, which some bots skip. */
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .segmented {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
