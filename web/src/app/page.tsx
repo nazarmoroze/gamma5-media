@@ -35,6 +35,7 @@ function structuredData(home: HomeData | null, settings: Settings | null) {
         "@id": `${siteUrl}/#organization`,
         name,
         alternateName: s?.legalName ?? undefined,
+        legalName: s?.registeredName ?? undefined,
         url: siteUrl,
         logo: `${siteUrl}/logo.svg`,
         description: h?.seo?.description ?? undefined,
