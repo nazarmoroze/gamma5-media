@@ -12,6 +12,7 @@ import styles from "./Header.module.css";
 const links = [
   { href: "/#about", label: "About" },
   { href: "/work", label: "Work" },
+  { href: "/#faq", label: "FAQ" },
   { href: "/#contact", label: "Contact" },
 ];
 
@@ -119,13 +120,13 @@ export function Header() {
         </nav>
 
         <div className={styles.menuFoot}>
-          <div className={styles.reveal} style={stagger(3)}>
+          <div className={styles.reveal} style={stagger(links.length)}>
             <span className={styles.footLabel}>Get in touch</span>
             <a href={`mailto:${contacts.email}`} className={styles.footEmail} onClick={close}>
               {contacts.email}
             </a>
           </div>
-          <div className={`${styles.reveal} ${styles.socials}`} style={stagger(4)}>
+          <div className={`${styles.reveal} ${styles.socials}`} style={stagger(links.length + 1)}>
             {socials.map((s) => (
               <a key={s.label} href={s.href} className={styles.social}>
                 {s.label}
@@ -135,7 +136,7 @@ export function Header() {
           <Link
             href="/#contact"
             className={`btn btn-red ${styles.reveal} ${styles.footCta}`}
-            style={stagger(5)}
+            style={stagger(links.length + 2)}
             onClick={close}
           >
             Discuss your project

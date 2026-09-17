@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 
-import { sendBrief, type BriefState, type ProjectKind, type ReplyMethod } from "@/app/actions";
+import { sendBrief, type BriefState, type ReplyMethod } from "@/app/actions";
 import { CheckIcon } from "@/components/icons";
 
 import styles from "./Contact.module.css";
@@ -13,23 +13,15 @@ const methods: Record<ReplyMethod, { label: string; field: string; type: string;
   telegram: { label: "Telegram", field: "Telegram username", type: "text", autoComplete: "off", placeholder: "@username" },
 };
 
-const kinds: { id: ProjectKind; label: string }[] = [
-  { id: "commercial", label: "Commercial" },
-  { id: "youtube", label: "YouTube" },
-  { id: "short", label: "Short content" },
-  { id: "other", label: "Something else" },
-];
-
 const initialState: BriefState = { status: "idle" };
 
 export function BriefForm() {
   const [state, formAction, pending] = useActionState(sendBrief, initialState);
   const [method, setMethod] = useState<ReplyMethod>("email");
-  const [kind, setKind] = useState<ProjectKind>("commercial");
   const [dismissedAt, setDismissedAt] = useState<number | null>(null);
 
   const errors = state.status === "error" ? state.errors : {};
-  const values = state.status === "error" ? state.values : { name: "", contact: "", message: "" };
+  const values = state.status === "error" ? state.values : { name: "", contact: "" };
   const showSuccess = state.status === "success" && state.at !== dismissedAt;
   const current = methods[method];
 
@@ -110,36 +102,6 @@ export function BriefForm() {
         {errors.contact && (
           <span id="brief-contact-error" className={styles.error}>
             {errors.contact}
-          </span>
-        )}
-      </label>
-
-      <fieldset className={styles.fieldset}>
-        <legend className={styles.label}>What do you need?</legend>
-        <input type="hidden" name="kind" value={kind} />
-        <div className={styles.chips}>
-          {kinds.map((k) => (
-            <button key={k.id} type="button" className={styles.chip} aria-pressed={kind === k.id} onClick={() => setKind(k.id)}>
-              {k.label}
-            </button>
-          ))}
-        </div>
-      </fieldset>
-
-      <label className={styles.field}>
-        <span className={styles.label}>About the project</span>
-        <textarea
-          className={`${styles.input} ${styles.textarea}`}
-          name="message"
-          defaultValue={values.message}
-          rows={4}
-          placeholder="Goal, deadline, budget — whatever you already know."
-          aria-invalid={Boolean(errors.message)}
-          aria-describedby={errors.message ? "brief-message-error" : undefined}
-        />
-        {errors.message && (
-          <span id="brief-message-error" className={styles.error}>
-            {errors.message}
           </span>
         )}
       </label>

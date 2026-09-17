@@ -10,19 +10,10 @@
   color: var(--text-muted);
 }
 
-.more {
-  margin-top: 28px;
-  display: flex;
-  justify-content: center;
-}
 
 @media (min-width: 900px) {
   .portfolio {
     padding-top: 150px;
     scroll-margin-top: 40px;
-  }
-
-  .more {
-    margin-top: 40px;
   }
 }

@@ -222,6 +222,12 @@
     transform 260ms var(--ease-out);
 }
 
+.more {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+}
+
 .cta,
 .tile {
   display: none;
@@ -362,6 +368,14 @@
   .play {
     width: 52px;
     height: 52px;
+  }
+
+  .more {
+    margin-top: 40px;
+  }
+
+  .moreMobileOnly {
+    display: none;
   }
 
   .cta,
