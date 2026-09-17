@@ -2,10 +2,11 @@ import type {StructureResolver} from 'sanity/structure'
 import {CogIcon} from '@sanity/icons/Cog'
 import {EnvelopeIcon} from '@sanity/icons/Envelope'
 import {HomeIcon} from '@sanity/icons/Home'
+import {LockIcon} from '@sanity/icons/Lock'
 import {PlayIcon} from '@sanity/icons/Play'
 
 // One document each, with a fixed ID. Kept out of "create new" and destructive actions.
-export const SINGLETONS = ['homePage', 'siteSettings']
+export const SINGLETONS = ['homePage', 'siteSettings', 'privacyPolicy']
 
 // Created by the website's contact form, never from the Studio.
 export const FORM_SUBMISSIONS = ['quoteRequest']
@@ -24,6 +25,11 @@ export const structure: StructureResolver = (S) =>
         .id('siteSettings')
         .icon(CogIcon)
         .child(S.document().schemaType('siteSettings').documentId('siteSettings').title('Site settings')),
+      S.listItem()
+        .title('Privacy policy')
+        .id('privacyPolicy')
+        .icon(LockIcon)
+        .child(S.document().schemaType('privacyPolicy').documentId('privacyPolicy').title('Privacy policy')),
       S.divider(),
       S.listItem()
         .title('Quote requests')

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Logo } from "@/components/Logo";
 import { contactLinks, newTab } from "@/lib/site";
 import type { Settings } from "@/sanity/types";
@@ -21,6 +23,9 @@ export function Footer({ settings }: { settings: Settings | null }) {
               {link.label}
             </a>
           ))}
+          <Link href="/privacy-policy" className={styles.link}>
+            Privacy Policy
+          </Link>
           <a href="#top" className={styles.link}>
             Back to top ↑
           </a>

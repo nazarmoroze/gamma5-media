@@ -15,6 +15,35 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type PrivacyPolicy = {
+  _id: string;
+  _type: "privacyPolicy";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  lastUpdated?: string;
+  description?: string;
+  body?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h2" | "h3";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+};
+
 export type QuoteRequest = {
   _id: string;
   _type: "quoteRequest";
@@ -334,6 +363,7 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | PrivacyPolicy
   | QuoteRequest
   | SanityImageAssetReference
   | SanityFileAssetReference
@@ -479,6 +509,33 @@ export type HOME_QUERY_RESULT = {
 } | null;
 
 // Source: ../web/src/sanity/queries.ts
+// Variable: PRIVACY_QUERY
+// Query: *[_id == "privacyPolicy" && _type == "privacyPolicy"][0] {    title,    lastUpdated,    description,    body  }
+export type PRIVACY_QUERY_RESULT = {
+  title: string | null;
+  lastUpdated: string | null;
+  description: string | null;
+  body: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "h2" | "h3" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
+} | null;
+
+// Source: ../web/src/sanity/queries.ts
 // Variable: CASES_QUERY
 // Query: *[_type == "case" && defined(slug.current)] | order(coalesce(order, 999) asc, year desc) {      _id,  title,  "slug": slug.current,  client,  category,  year,  orientation,  cover {   alt,  hotspot,  crop,  asset->{ _id, url, metadata { lqip, dimensions { width, height } } } },  "fullVideo": coalesce(fullVideoFile.asset->url, fullVideoUrl),  "previewVideo": coalesce(previewVideoFile.asset->url, previewVideoUrl)  }
 export type CASES_QUERY_RESULT = Array<{
@@ -591,6 +648,7 @@ declare global {
   interface SanityQueries {
     '\n  *[_id == "siteSettings" && _type == "siteSettings"][0] {\n    name,\n    legalName,\n    registeredName,\n    location,\n    email,\n    phone,\n    telegram,\n    instagram,\n    linkedin\n  }\n': SETTINGS_QUERY_RESULT;
     '\n  *[_id == "homePage" && _type == "homePage"][0] {\n    _id,\n    _type,\n    hero {\n      title,\n      subtitle,\n      ctaLabel,\n      "showreel": coalesce(showreelFile.asset->url, showreelUrl),\n      poster { \n  alt,\n  hotspot,\n  crop,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n }\n    },\n    about {\n      heading,\n      lead,\n      body,\n      stats[] { _key, value, label },\n      clients[] {\n        _key,\n        name,\n        logo { asset->{ _id, url, metadata { dimensions { width, height } } } }\n      }\n    },\n    portfolio {\n      title,\n      intro,\n      "cases": cases[]->{ \n  _id,\n  title,\n  "slug": slug.current,\n  client,\n  category,\n  year,\n  orientation,\n  cover { \n  alt,\n  hotspot,\n  crop,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n },\n  "fullVideo": coalesce(fullVideoFile.asset->url, fullVideoUrl),\n  "previewVideo": coalesce(previewVideoFile.asset->url, previewVideoUrl)\n }\n    },\n    faq {\n      title,\n      intro,\n      items[] { _key, question, answer }\n    },\n    contact { title, lede },\n    seo {\n      title,\n      description,\n      image { alt, asset->{ _id } }\n    }\n  }\n': HOME_QUERY_RESULT;
+    '\n  *[_id == "privacyPolicy" && _type == "privacyPolicy"][0] {\n    title,\n    lastUpdated,\n    description,\n    body\n  }\n': PRIVACY_QUERY_RESULT;
     '\n  *[_type == "case" && defined(slug.current)] | order(coalesce(order, 999) asc, year desc) {\n    \n  _id,\n  title,\n  "slug": slug.current,\n  client,\n  category,\n  year,\n  orientation,\n  cover { \n  alt,\n  hotspot,\n  crop,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n },\n  "fullVideo": coalesce(fullVideoFile.asset->url, fullVideoUrl),\n  "previewVideo": coalesce(previewVideoFile.asset->url, previewVideoUrl)\n\n  }\n': CASES_QUERY_RESULT;
     '\n  *[_type == "case" && defined(slug.current)].slug.current\n': CASE_SLUGS_QUERY_RESULT;
     '\n  *[_type == "case" && slug.current == $slug][0] {\n    \n  _id,\n  title,\n  "slug": slug.current,\n  client,\n  category,\n  year,\n  orientation,\n  cover { \n  alt,\n  hotspot,\n  crop,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n },\n  "fullVideo": coalesce(fullVideoFile.asset->url, fullVideoUrl),\n  "previewVideo": coalesce(previewVideoFile.asset->url, previewVideoUrl)\n,\n    scope,\n    summary,\n    gallery[] { _key, caption, \n  alt,\n  hotspot,\n  crop,\n  asset->{ _id, url, metadata { lqip, dimensions { width, height } } }\n },\n    brief,\n    idea,\n    result,\n    credits[] { _key, role, name },\n    testimonial { quote, author, role }\n  }\n': CASE_QUERY_RESULT;

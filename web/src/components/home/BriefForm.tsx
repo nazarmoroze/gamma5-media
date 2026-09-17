@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState, useState, type CSSProperties } from "react";
 
 import { sendBrief, type BriefState, type ReplyMethod } from "@/app/actions";
@@ -131,6 +132,14 @@ export function BriefForm() {
       <button type="submit" className={`btn btn-red ${styles.submit}`} disabled={pending}>
         {pending ? "Sending…" : "Send request"}
       </button>
+
+      <p className={styles.notice}>
+        We use your details only to reply to your request. See our{" "}
+        <Link href="/privacy-policy" className={styles.noticeLink}>
+          Privacy Policy
+        </Link>
+        .
+      </p>
     </form>
   );
 }

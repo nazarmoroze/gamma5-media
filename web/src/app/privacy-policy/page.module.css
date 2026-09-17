@@ -1,0 +1,112 @@
+.page {
+  padding-block: 112px 88px;
+}
+
+.inner {
+  display: grid;
+  gap: 40px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.title {
+  font-size: clamp(44px, 5.6vw, 84px);
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.updated {
+  font-size: 15px;
+  color: var(--text-subtle);
+}
+
+/* Long-form legal text: narrow measure and generous rhythm for easy reading. */
+.body {
+  max-width: 720px;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.h2 {
+  margin: 56px 0 16px;
+  font-size: clamp(24px, 2.4vw, 30px);
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--text);
+}
+
+.h2:first-child {
+  margin-top: 0;
+}
+
+.h3 {
+  margin: 32px 0 10px;
+  font-size: 19px;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.p {
+  margin: 0 0 16px;
+  text-wrap: pretty;
+}
+
+.list {
+  margin: 0 0 20px;
+  padding-left: 22px;
+  display: grid;
+  gap: 8px;
+}
+
+.list li::marker {
+  color: var(--red);
+}
+
+.link {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: rgba(245, 245, 244, 0.35);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 200ms ease;
+}
+
+.body strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .link:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+@media (min-width: 900px) {
+  .page {
+    padding-block: 190px 140px;
+  }
+
+  .inner {
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 60px;
+  }
+
+  .header {
+    grid-column: 1 / -1;
+    margin-bottom: 24px;
+  }
+
+  .body {
+    grid-column: 2;
+    font-size: 18px;
+  }
+}
