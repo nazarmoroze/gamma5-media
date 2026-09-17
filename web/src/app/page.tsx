@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 
 import { About } from "@/components/home/About";
 import { Contact } from "@/components/home/Contact";
+import { Faq } from "@/components/home/Faq";
 import { Hero } from "@/components/home/Hero";
 import { Portfolio } from "@/components/home/Portfolio";
 import { JsonLd } from "@/components/site/JsonLd";
 import { PageTransition } from "@/components/site/PageTransition";
-import { contacts, services, site } from "@/content/home";
+import { contacts, faq, services, site } from "@/content/home";
 import { sanityFetch } from "@/sanity/fetch";
 import { CASES_QUERY } from "@/sanity/queries";
 
@@ -41,6 +42,15 @@ const organizationJsonLd = {
       sameAs: [contacts.instagram.href, contacts.linkedin.href],
     },
     {
+      "@type": "FAQPage",
+      "@id": `${site.url}/#faq`,
+      mainEntity: faq.items.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: { "@type": "Answer", text: item.answer },
+      })),
+    },
+    {
       "@type": "WebSite",
       "@id": `${site.url}/#website`,
       url: site.url,
@@ -62,6 +72,7 @@ export default async function Home() {
         <Hero />
         <About />
         <Portfolio cases={featured.length > 0 ? featured : cases} />
+        <Faq />
         <Contact />
       </main>
     </PageTransition>

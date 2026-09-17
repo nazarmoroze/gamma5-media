@@ -13,7 +13,7 @@ export function Portfolio({ cases }: { cases: CaseSummary[] }) {
       <div className="container">
         <WorkGrid
           cases={cases}
-          featureFirst
+          extraTile={{ href: "/work", kicker: "Portfolio", title: "See all our projects.", label: "View all work" }}
           heading={
             <>
               <span className="eyebrow">Portfolio</span>

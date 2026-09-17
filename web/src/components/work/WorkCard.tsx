@@ -11,12 +11,11 @@ import { caseHref, categoryLabel, type CaseSummary } from "./types";
 
 type WorkCardProps = {
   item: CaseSummary;
-  wide: boolean;
   delay: number;
   onPlay: () => void;
 };
 
-export function WorkCard({ item, wide, delay, onPlay }: WorkCardProps) {
+export function WorkCard({ item, delay, onPlay }: WorkCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const startPreview = () => {
@@ -37,14 +36,14 @@ export function WorkCard({ item, wide, delay, onPlay }: WorkCardProps) {
 
   return (
     <article
-      className={`${styles.card} ${wide ? styles.wide : ""}`}
+      className={styles.card}
       style={{ animationDelay: `${delay}ms` }}
       onMouseEnter={startPreview}
       onMouseLeave={stopPreview}
     >
       <SanityImage
         image={item.cover}
-        sizes={wide ? "(min-width: 1024px) 792px, 100vw" : "(min-width: 1024px) 384px, (min-width: 640px) 50vw, 100vw"}
+        sizes="(min-width: 1024px) 384px, (min-width: 640px) 50vw, 100vw"
         className={styles.poster}
       />
       {item.previewVideo && (

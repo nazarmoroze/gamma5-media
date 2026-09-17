@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { CtaBand } from "@/components/site/CtaBand";
 import { PageTransition } from "@/components/site/PageTransition";
 import { WorkGrid } from "@/components/work/WorkGrid";
+import { contacts } from "@/content/home";
 import { sanityFetch } from "@/sanity/fetch";
 import { CASES_QUERY } from "@/sanity/queries";
 
@@ -34,6 +35,13 @@ export default async function WorkPage() {
           <div className="container">
             <WorkGrid
               cases={cases}
+              extraTile={{
+                href: contacts.instagram.href,
+                kicker: "Instagram",
+                title: "More of our work on Instagram.",
+                label: "Follow @gamma5media",
+                external: true,
+              }}
               heading={
                 <>
                   <span className="eyebrow">Work</span>
