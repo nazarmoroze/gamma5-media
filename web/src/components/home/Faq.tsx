@@ -23,7 +23,7 @@ export function Faq() {
 
         <div className={styles.list}>
           {faq.items.map((item) => (
-            <details key={item.question} className={styles.item}>
+            <details key={item.question} name="faq" className={styles.item}>
               <summary className={styles.question}>
                 <h3 className={styles.questionText}>{item.question}</h3>
                 <span className={styles.icon} aria-hidden="true" />
