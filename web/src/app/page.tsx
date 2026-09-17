@@ -9,15 +9,22 @@ import { Portfolio } from "@/components/home/Portfolio";
 import { TrustedBy } from "@/components/home/TrustedBy";
 import { JsonLd } from "@/components/site/JsonLd";
 import { PageTransition } from "@/components/site/PageTransition";
+import { pageMetadata } from "@/lib/metadata";
 import { siteUrl } from "@/lib/site";
 import { organizationId, websiteId } from "@/lib/structured-data";
 import { sanityFetch } from "@/sanity/live";
 import { HOME_QUERY, SETTINGS_QUERY } from "@/sanity/queries";
 import type { HomeData, Settings } from "@/sanity/types";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { data: home } = await sanityFetch({ query: HOME_QUERY, stega: false });
+  return pageMetadata({
+    title: home?.seo?.title || "Video Production Company in Cyprus",
+    description: home?.seo?.description,
+    path: "/",
+    image: home?.seo?.image,
+  });
+}
 
 function structuredData(home: HomeData | null, settings: Settings | null) {
   const h = stegaClean(home);

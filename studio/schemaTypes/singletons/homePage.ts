@@ -1,6 +1,8 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 import {HomeIcon} from '@sanity/icons/Home'
 
+import {shareImageField} from '../fields/shareImage'
+
 const imageWithAlt = (name: string, title: string, description?: string) =>
   defineField({
     name,
@@ -202,7 +204,7 @@ export const homePageType = defineType({
           rows: 3,
           validation: (rule) => rule.required().min(70).max(160).warning('Aim for 120–160 characters'),
         }),
-        imageWithAlt('image', 'Social share image', '1200×630 works best.'),
+        shareImageField({name: 'image'}),
       ],
     }),
   ],

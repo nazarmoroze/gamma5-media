@@ -7,8 +7,8 @@ import { draftMode } from "next/headers";
 import { DraftModeTools } from "@/components/site/DraftModeTools";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
+import { DEFAULT_SHARE_IMAGE } from "@/lib/metadata";
 import { siteUrl } from "@/lib/site";
-import { urlFor } from "@/sanity/image";
 import { SanityLive, sanityFetch } from "@/sanity/live";
 import { HOME_QUERY, SETTINGS_QUERY } from "@/sanity/queries";
 
@@ -28,9 +28,6 @@ export async function generateMetadata(): Promise<Metadata> {
   const name = settings?.name || "GAMMA5";
   const title = home?.seo?.title ? `${home.seo.title} | ${name}` : name;
   const description = home?.seo?.description ?? undefined;
-  const image = home?.seo?.image?.asset?._id
-    ? urlFor(home.seo.image.asset._id).width(1200).height(630).url()
-    : undefined;
 
   return {
     metadataBase: new URL(siteUrl),
@@ -46,15 +43,21 @@ export async function generateMetadata(): Promise<Metadata> {
       ],
       apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
     },
+    // Fallback for pages without their own metadata; each page sets its full share card via pageMetadata().
     openGraph: {
       type: "website",
       siteName: name,
       locale: "en_US",
       title,
       description,
-      images: image ? [{ url: image, width: 1200, height: 630, alt: home?.seo?.image?.alt ?? name }] : undefined,
+      images: [DEFAULT_SHARE_IMAGE],
     },
-    twitter: { card: "summary_large_image", title, description, images: image ? [image] : undefined },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [{ url: DEFAULT_SHARE_IMAGE.url, alt: DEFAULT_SHARE_IMAGE.alt }],
+    },
   };
 }
 

@@ -1,6 +1,8 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 import {PlayIcon} from '@sanity/icons/Play'
 
+import {shareImageField} from '../fields/shareImage'
+
 export const CASE_CATEGORIES = [
   {title: 'Commercial', value: 'commercial'},
   {title: 'YouTube', value: 'youtube'},
@@ -105,6 +107,7 @@ export const caseType = defineType({
       ],
       validation: (rule) => rule.required(),
     }),
+    shareImageField({group: 'media'}),
     defineField({
       name: 'fullVideoFile',
       title: 'File',
