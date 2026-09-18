@@ -6,10 +6,12 @@ import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 
 import { VideoDialog } from "@/components/VideoDialog";
 import { ArrowRightIcon } from "@/components/icons";
+import { youtubeId } from "@/lib/youtube";
 import { urlFor } from "@/sanity/image";
 
 import { WorkCard } from "./WorkCard";
 import styles from "./WorkGrid.module.css";
+import { videoAspect } from "./aspect";
 import { caseCategory, caseHref, categoryLabel, categoryLabels, isVertical, type CaseCategory, type CaseSummary } from "./types";
 
 type Filter = "all" | CaseCategory;
@@ -66,6 +68,7 @@ export function WorkGrid({ cases, heading, extraTile, moreLink, priorityCount = 
     setActiveId(list[(activeIndex + delta + list.length) % list.length]._id);
   };
 
+  const activeYoutube = youtubeId(stegaClean(active?.youtubeUrl));
   const activeSrc = stegaClean(active?.fullVideo ?? active?.previewVideo) ?? undefined;
   const activePoster = active?.cover?.asset?._id ? urlFor(active.cover.asset._id).width(1600).url() : "/media/house.jpg";
 
@@ -173,10 +176,14 @@ export function WorkGrid({ cases, heading, extraTile, moreLink, priorityCount = 
         title={active?.title ?? ""}
         meta={active ? [active.client, categoryLabel(active.category)].filter(Boolean).join(" · ") : undefined}
         src={activeSrc}
-        previewNote={active && !active.fullVideo && active.previewVideo ? "Preview · full film coming soon" : undefined}
+        youtube={activeYoutube}
+        previewNote={
+          active && !active.fullVideo && !activeYoutube && active.previewVideo ? "Preview · full film coming soon" : undefined
+        }
         poster={activePoster}
         posterAlt={active?.cover?.alt ?? ""}
         vertical={isVertical(active?.orientation ?? null)}
+        aspect={active ? videoAspect(active.videoAspect, isVertical(active.orientation)) : undefined}
         action={active ? { href: caseHref(active.slug), label: "View case study" } : undefined}
         counter={active ? `${pad(activeIndex + 1)} / ${pad(list.length)}` : undefined}
         onPrev={list.length > 1 ? () => step(-1) : undefined}

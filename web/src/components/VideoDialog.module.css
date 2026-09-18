@@ -119,6 +119,17 @@
   background: #000;
 }
 
+/* The YouTube player fills the frame, which already has the film's shape. */
+iframe.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: fill;
+  border: 0;
+}
+
 .vertical .video {
   width: auto;
   height: min(76dvh, 720px);

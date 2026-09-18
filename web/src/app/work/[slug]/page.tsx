@@ -13,6 +13,7 @@ import { caseCategory, caseHref, categoryLabel, isVertical, type CaseCategory } 
 import { pageMetadata } from "@/lib/metadata";
 import { siteUrl } from "@/lib/site";
 import { absoluteUrl, breadcrumbList, organizationId } from "@/lib/structured-data";
+import { youtubeId } from "@/lib/youtube";
 import { client } from "@/sanity/client";
 import { urlFor } from "@/sanity/image";
 import { sanityFetch } from "@/sanity/live";
@@ -71,12 +72,14 @@ export default async function CasePage({ params }: Props) {
 
   const clean = stegaClean(item);
   const url = absoluteUrl(caseHref(clean.slug));
-  const videoUrl = clean.fullVideo ?? clean.previewVideo;
+  const youtube = youtubeId(clean.youtubeUrl);
+  // The preview loop stands in for the film only while there is no full film at all.
+  const videoUrl = clean.fullVideo ?? (youtube ? null : clean.previewVideo);
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
       // The film is the main content of a case page, which makes it eligible for video results.
-      ...(videoUrl && clean.cover?.asset?._id
+      ...((videoUrl || youtube) && clean.cover?.asset?._id
         ? [
             {
               "@type": "VideoObject",
@@ -85,7 +88,8 @@ export default async function CasePage({ params }: Props) {
               description: caseSeo(clean).description,
               thumbnailUrl: [urlFor(clean.cover.asset._id).width(1280).height(720).url()],
               uploadDate: clean.releaseDate ?? clean._createdAt,
-              contentUrl: videoUrl,
+              ...(youtube ? { embedUrl: `https://www.youtube.com/embed/${youtube}` } : {}),
+              ...(videoUrl ? { contentUrl: videoUrl } : {}),
               url,
               publisher: {
                 "@type": "Organization",
@@ -145,7 +149,9 @@ export default async function CasePage({ params }: Props) {
             title={item.title ?? ""}
             cover={item.cover}
             fullVideo={item.fullVideo}
+            youtubeUrl={item.youtubeUrl}
             previewVideo={item.previewVideo}
+            videoAspect={item.videoAspect}
             vertical={isVertical(item.orientation)}
           />
 
