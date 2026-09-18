@@ -5,12 +5,12 @@ import type { NextConfig } from "next";
 // frame-ancestors lets the Sanity Studio Presentation tool show the site in its preview.
 const contentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
+  "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com https://www.googletagmanager.com",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://cdn.sanity.io",
+  "img-src 'self' data: blob: https://cdn.sanity.io https://*.google-analytics.com https://*.googletagmanager.com",
   "media-src 'self' blob: https://cdn.sanity.io",
   "font-src 'self' data:",
-  "connect-src 'self' https://*.sanity.io wss://*.sanity.io https://va.vercel-scripts.com https://vitals.vercel-insights.com",
+  "connect-src 'self' https://*.sanity.io wss://*.sanity.io https://va.vercel-scripts.com https://vitals.vercel-insights.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
   "frame-src 'self'",
   "frame-ancestors 'self' https://studio.gamma5media.com https://*.sanity.studio https://*.sanity.io http://localhost:*",
   "form-action 'self'",

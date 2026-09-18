@@ -27,9 +27,19 @@
   transition: color 200ms ease;
 }
 
+/* The one action in the footer, so it carries the brand colour. */
+.toTop {
+  color: var(--red);
+  font-weight: 600;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .link:hover {
     color: #fff;
+  }
+
+  .toTop:hover {
+    color: #ff4b4a;
   }
 }
 

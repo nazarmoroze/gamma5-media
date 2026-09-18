@@ -149,7 +149,11 @@ export const caseType = defineType({
               type: 'string',
               validation: (rule) => rule.required().warning('Describe the image for screen readers'),
             }),
-            defineField({name: 'caption', type: 'string'}),
+            defineField({
+              name: 'caption',
+              type: 'string',
+              description: 'Not shown on the page; read out by screen readers for people who cannot see the image.',
+            }),
           ],
         }),
       ],

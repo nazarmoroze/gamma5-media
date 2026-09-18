@@ -4,9 +4,11 @@ import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
 import { draftMode } from "next/headers";
 
+import { CookieConsent } from "@/components/site/CookieConsent";
 import { DraftModeTools } from "@/components/site/DraftModeTools";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
+import { gaId } from "@/lib/analytics";
 import { DEFAULT_SHARE_IMAGE } from "@/lib/metadata";
 import { siteUrl } from "@/lib/site";
 import { SanityLive, sanityFetch } from "@/sanity/live";
@@ -81,6 +83,8 @@ export default async function RootLayout({
         {isDraftMode && <DraftModeTools />}
         <Analytics />
         <SpeedInsights />
+        {/* Google Analytics loads only after the visitor accepts. */}
+        <CookieConsent gaId={gaId} />
       </body>
     </html>
   );

@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Logo } from "@/components/Logo";
+import { CookieSettingsButton } from "@/components/site/CookieSettingsButton";
 import { contactLinks, newTab } from "@/lib/site";
 import type { Settings } from "@/sanity/types";
 
@@ -26,7 +27,8 @@ export function Footer({ settings }: { settings: Settings | null }) {
           <Link href="/privacy-policy" className={styles.link}>
             Privacy Policy
           </Link>
-          <a href="#top" className={styles.link}>
+          <CookieSettingsButton className={styles.link} />
+          <a href="#top" className={`${styles.link} ${styles.toTop}`}>
             Back to top ↑
           </a>
         </nav>
