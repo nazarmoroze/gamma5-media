@@ -13,6 +13,13 @@
   margin-inline: auto;
 }
 
+/* The YouTube player is an iframe: it must fill the frame, not be cropped like a photo,
+   and it has a border by default. */
+iframe.video {
+  object-fit: fill;
+  border: 0;
+}
+
 .video {
   position: absolute;
   inset: 0;

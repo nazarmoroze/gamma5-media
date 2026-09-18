@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 import { ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "@/components/icons";
+import { youtubeEmbedSrc } from "@/lib/youtube";
 
 import styles from "./VideoDialog.module.css";
 
@@ -14,11 +15,15 @@ type VideoDialogProps = {
   title: string;
   meta?: string;
   src?: string;
+  /** YouTube video id; takes priority over `src` and plays in an embedded player. */
+  youtube?: string | null;
   /** Set when `src` is only the short preview loop: it plays muted on repeat with this note. */
   previewNote?: string;
   poster: string;
   posterAlt: string;
   vertical?: boolean;
+  /** Shape of the film, so the frame matches it exactly. */
+  aspect?: { css: string; ratio: number };
   action?: { href: string; label: string };
   counter?: string;
   onPrev?: () => void;
@@ -31,10 +36,12 @@ export function VideoDialog({
   title,
   meta,
   src,
+  youtube,
   previewNote,
   poster,
   posterAlt,
   vertical,
+  aspect,
   action,
   counter,
   onPrev,
@@ -105,17 +112,31 @@ export function VideoDialog({
             </div>
           </div>
 
-          <div className={[styles.frame, src ? "" : styles.placeholder, vertical ? styles.vertical : ""].join(" ")}>
-            {src && !previewNote && (
+          <div
+            className={[styles.frame, src || youtube ? "" : styles.placeholder, vertical ? styles.vertical : ""].join(" ")}
+            // The frame takes the exact shape of the film and never grows past the screen height.
+            style={youtube && aspect ? { aspectRatio: aspect.css, width: `min(100%, calc(76dvh * ${aspect.ratio}))` } : undefined}
+          >
+            {youtube && (
+              <iframe
+                key={youtube}
+                className={styles.video}
+                src={youtubeEmbedSrc(youtube)}
+                title={title}
+                allow="accelerator; autoplay; encrypted-media; fullscreen; picture-in-picture"
+                allowFullScreen
+              />
+            )}
+            {!youtube && src && !previewNote && (
               <video key={src} className={styles.video} src={src} poster={poster} controls autoPlay playsInline />
             )}
-            {src && previewNote && (
+            {!youtube && src && previewNote && (
               <>
                 <video key={src} className={styles.video} src={src} poster={poster} autoPlay muted loop playsInline />
                 <span className={styles.note}>{previewNote}</span>
               </>
             )}
-            {!src && (
+            {!youtube && !src && (
               <>
                 <Image
                   src={poster}

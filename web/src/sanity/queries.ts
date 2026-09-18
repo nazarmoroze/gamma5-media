@@ -15,8 +15,10 @@ const caseCardFields = /* groq */ `
   category,
   year,
   orientation,
+  videoAspect,
   cover { ${imageFields} },
   "fullVideo": fullVideoFile.asset->url,
+  youtubeUrl,
   "previewVideo": previewVideoFile.asset->url
 `;
 

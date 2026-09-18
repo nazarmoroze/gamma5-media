@@ -112,6 +112,18 @@ export const caseType = defineType({
       description:
         'The finished film with sound. Upload an MP4 (H.264 video, AAC audio), 1920 × 1080 for horizontal or 1080 × 1920 for vertical. It plays in the player and on the case page.',
     }),
+    defineField({
+      name: 'youtubeUrl',
+      title: 'YouTube link',
+      type: 'url',
+      group: 'media',
+      description:
+        'Link to the finished film on YouTube, e.g. https://youtu.be/xxxxxxxx. Used when there is no uploaded file. The film plays right on the page.',
+      validation: (rule) =>
+        rule.uri({scheme: ['https']}).custom((value?: string) =>
+          !value || /(?:youtube\.com|youtu\.be)\//.test(value) ? true : 'Paste a link to a video on YouTube.',
+        ),
+    }),
     videoFileField({
       name: 'previewVideoFile',
       title: 'Preview loop',
@@ -132,6 +144,17 @@ export const caseType = defineType({
         direction: 'horizontal',
       },
       initialValue: 'horizontal',
+    }),
+    defineField({
+      name: 'videoAspect',
+      title: 'Video shape',
+      type: 'string',
+      group: 'media',
+      placeholder: '16:9',
+      description:
+        'The shape of the finished film, written as width:height — 16:9 for the usual widescreen, 1.9:1 or 2.39:1 for cinema, 9:16 for vertical, 1:1 for square. If it does not match the film, the player shows black bars. Leave empty for 16:9 (or 9:16 for a vertical case).',
+      validation: (rule) =>
+        rule.regex(/^\d+(\.\d+)?:\d+(\.\d+)?$/, {name: 'ratio like 16:9'}).warning('Write the shape as width:height, for example 16:9'),
     }),
     defineField({
       name: 'gallery',
